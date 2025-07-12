@@ -36,7 +36,7 @@ coding!
 
 - Anass Maddah: [GitHub](https://github.com/snowbytes)
 - Isaac Abodunrin [GitHub](https://github.com/bytesandroses)
-- Teammate name #2: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Oluwatobi Adewuyi: [GitHub](https://github.com/Oluwatobbyloba)
 
    ...
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
