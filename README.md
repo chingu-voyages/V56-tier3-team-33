@@ -38,7 +38,7 @@ coding!
 - Isaac Abodunrin [GitHub](https://github.com/bytesandroses)
 - Oluwatobi Adewuyi: [GitHub](https://github.com/Oluwatobbyloba)
 - Prakash Das #prakshh : [GitHub](https://github.com/prakshh)
-
-   ...
+- Oluwatosin Awoniyi: [Github](https://github.com/Yowa-Tosin)
+    ...
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
 - theDevGuy578: Github [https://github.com/LMgit91]
