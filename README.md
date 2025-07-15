@@ -39,7 +39,7 @@ coding!
 - Oluwatobi Adewuyi: [GitHub](https://github.com/Oluwatobbyloba)
 - Prakash Das #prakshh : [GitHub](https://github.com/prakshh)
 - Oluwatosin Awoniyi: [Github](https://github.com/Yowa-Tosin)
-  ...
+- Michael Ugorji: [GitHub](https://Izunnaya) 
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
 - theDevGuy578: Github [https://github.com/LMgit91]
 - Chukwuemeka Okezie: [GitHub](https://github.com/emmynando) / [LinkedIn](https://linkedin.com/in/chukwuemeka-okezie-2b1335177)
