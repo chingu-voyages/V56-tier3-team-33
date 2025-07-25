@@ -35,6 +35,8 @@ All frontend code must meet these accessibility requirements:
 
 ## 2. Git Workflow
 
+![Git Workflow](./images/Using_Git_GitHub_in_a_Team.png)
+
 The [Chingu Git workflow](https://github.com/chingu-voyages/Handbook/blob/main/docs/resources/techresources/gitgithub.md#the-workflow) will be used for version control.
 
 ## 3. Naming Conventions
