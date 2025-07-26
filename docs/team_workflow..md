@@ -60,4 +60,4 @@ Good chance it will be [Render](https://render.com/) but this may change.
 
 ## Citations
 
-This workflow is largely based on an earlier workflow developed by [@snowbytes]{https://github.com/snowbytes}.
+This workflow is largely based on an earlier workflow developed by [@snowbytes](https://github.com/snowbytes).
