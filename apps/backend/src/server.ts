@@ -20,13 +20,10 @@ process.on("uncaughtException", async (error) => {
   console.error("> uncaught exception crashed the server. shutting down...");
   console.error(error);
   await pool.end();
-  process.exit(1);
 });
 
 process.on("SIGTERM", async () => {
   console.info("> SIGTERM detected. Shutting down...");
   await pool.end();
-
   console.info("> shutdown complete.");
-  process.exit(0);
 });
