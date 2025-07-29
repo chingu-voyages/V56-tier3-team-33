@@ -1,0 +1,27 @@
+{
+  "name": "wecare",
+  "private": true,
+  "license": "ISC",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "prepare": "node scripts/prepare.mjs",
+    "dev:be": "npm run dev --workspace=apps/backend",
+    "dev:fe": "npm run dev --workspace=apps/frontend",
+    "format": "prettier --write --ignore-unknown .",
+    "format:be": "prettier --write --ignore-unknown apps/backend",
+    "format:fe": "prettier --write --ignore-unknown apps/frontend",
+    "lint": "npm run lint:be && npm run lint:fe",
+    "lint:be": "npm run lint --workspace=apps/backend",
+    "lint:fe": "npm run lint --workspace=apps/frontend"
+  },
+  "devDependencies": {
+    "eslint": "9.32.0",
+    "lint-staged": "16.1.2",
+    "prettier": "3.6.2"
+  }
+}

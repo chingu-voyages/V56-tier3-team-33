@@ -50,6 +50,7 @@ Follow the mandatory requirements of the [Conventional Commits specification](ht
 Please use conventional commit types with the format: `<type>/<name>`.
 
 **Examples:**
+
 - `feat/dark-mode`
 - `fix/login-validation`
 - `docs/api-documentation`
