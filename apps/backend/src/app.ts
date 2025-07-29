@@ -1,4 +1,5 @@
 import express from "express";
+import exampleEntityRouter from "./example-entity/index.js";
 
 const app = express();
 
@@ -8,10 +9,8 @@ app.use(function logRequests(req, _, next) {
   next();
 });
 
-// TODO: add different routers here
-app.use("/v1", function stubRoute(req, res) {
-  res.send("Hello world!");
-});
+// adding different routers here
+app.use("/v1", exampleEntityRouter);
 
 app.use(function notFound(_, res) {
   res.status(404).json({ message: "Route not found" });
