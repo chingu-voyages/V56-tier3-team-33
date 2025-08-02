@@ -18,7 +18,7 @@ app.use(function setupCORS(_, res, next) {
 });
 
 // adding different routers here
-app.use("/v1", exampleEntityRouter);
+app.use("/api/v1", exampleEntityRouter);
 
 app.use(function notFound(_, res) {
   res.status(404).json({ message: "Route not found" });

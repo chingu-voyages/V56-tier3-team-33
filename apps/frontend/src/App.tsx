@@ -3,12 +3,14 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 
+const FETCH_URL = `${import.meta.env.VITE_BACKEND_URL}/api/v1`;
+
 function App() {
   const [count, setCount] = useState(0);
   const [serverResponse, setServerResponse] = useState("");
 
   useEffect(() => {
-    fetch("/api/v1")
+    fetch(FETCH_URL)
       .then((res) => res.text())
       .then((data) => {
         setServerResponse(data);
