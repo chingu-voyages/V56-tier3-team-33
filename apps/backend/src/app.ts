@@ -1,5 +1,6 @@
 import express from "express";
 import exampleEntityRouter from "./example-entity/index.js";
+import userRouter from "./user/index.js";
 
 const { FRONTEND_URL } = process.env;
 const app = express();
@@ -19,6 +20,7 @@ app.use(function setupCORS(_, res, next) {
 
 // adding different routers here
 app.use("/api/v1", exampleEntityRouter);
+app.use("/api/v1/user", userRouter);
 
 app.use(function notFound(_, res) {
   res.status(404).json({ message: "Route not found" });
