@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "wecare-backend",
+  "name": "backend",
   "license": "ISC",
   "version": "1.0.0",
   "type": "module",

@@ -18,13 +18,13 @@ export function makeDb(): Pool {
     return pool;
   }
 
-  if (!process.env.DB_URI) {
+  if (!process.env.DB_URL) {
     throw new Error("DB connection string not set, check your env vars");
   }
 
   try {
     console.info("> connecting to the database...");
-    pool = new Pool({ connectionString: process.env.DB_URI });
+    pool = new Pool({ connectionString: process.env.DB_URL });
     console.info("> db connection established");
 
     return pool;
