@@ -1,7 +1,7 @@
 import { env } from "node:process";
 import { execSync } from "node:child_process";
 
-if (env.NODE_ENV === "production") {
+if (!env.NODE_ENV || env.NODE_ENV === "production") {
   process.exit(0);
 }
 
