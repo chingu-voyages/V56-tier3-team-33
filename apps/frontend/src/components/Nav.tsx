@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./nav.module.css";
-/**
- * @param {{ onLoginClick: () => void }} props
- */
+import styles from "../assets/nav.module.css";
 
-export default function Nav({ onLoginClick }) {
+type NavProps = {
+  onLoginClick: () => void;
+};
+
+export default function Nav({ onLoginClick }: NavProps) {
   return (
     <div>
       <header>
@@ -16,6 +17,7 @@ export default function Nav({ onLoginClick }) {
               <p className={styles.logoDetailP2}>Care</p>
             </div>
           </div>
+
           <Link
             onClick={(e) => {
               e.preventDefault();

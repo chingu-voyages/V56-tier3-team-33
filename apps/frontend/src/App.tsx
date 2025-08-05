@@ -1,18 +1,24 @@
-import { useState } from "react";
-import Nav from "./nav/Nav";
-import Login from "./nav/Login";
 import "./App.css";
+import { useState } from "react";
+import Landing from "./components/Landing";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Signupclient from "./components/Signupclient";
+import SignupProfessional from "./components/SignupProfessional";
 
 function App() {
-  const [showModal, setShowModal] = useState<boolean>(false);
-
-  const openModal = () => setShowModal(true);
-  const closeModal = () => setShowModal(false);
-
   return (
     <>
-      <Nav onLoginClick={openModal} />
-      {showModal && <Login onClose={closeModal} />}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup/client" element={<Signupclient />} />
+          <Route path="/signup/professional" element={<SignupProfessional />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
