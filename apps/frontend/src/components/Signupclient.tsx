@@ -1,9 +1,23 @@
-import React, { useState } from "react";
-import styles from "./login.module.css";
-export default function Signupclient({ onClose, setMode, previous }) {
-  const [error, setError] = useState("");
+import type { ChangeEvent, FormEvent } from "react";
+import styles from "../assets/login.module.css";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-  const [form, setForm] = useState({
+type Props = {};
+
+type FormState = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  name: string;
+  age: string;
+  gender: string;
+  city: string;
+};
+
+export default function Signupclient() {
+  const [error, setError] = useState<string>("");
+  const [form, setForm] = useState<FormState>({
     email: "",
     password: "",
     confirmPassword: "",
@@ -13,14 +27,15 @@ export default function Signupclient({ onClose, setMode, previous }) {
     city: "",
   });
 
-  const handleChange = (e) => {
-    setForm((item) => ({
-      ...item,
-      [e.target.name]: e.target.value,
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match.");
@@ -28,15 +43,19 @@ export default function Signupclient({ onClose, setMode, previous }) {
     }
     setError("");
     console.log("Submitting:", form);
-    // we can send the formData to the backend
-    //We can show a message to explain the fact that we have
+    // send form data to backend or show a success message
   };
+
+  const navigate = useNavigate();
 
   return (
     <div>
       <div className={styles.modaloverlay}>
         <div className={styles.modalcontent}>
-          <button className={styles.closeTag} onClick={onClose}>
+          <button
+            className={`${styles.closeTag} ${styles.closeBtn2}`}
+            onClick={() => navigate("/")}
+          >
             X
           </button>
           <form onSubmit={handleSubmit}>
@@ -52,7 +71,7 @@ export default function Signupclient({ onClose, setMode, previous }) {
               </label>
               <label>
                 <input
-                  type="text"
+                  type="password"
                   name="password"
                   placeholder="password"
                   value={form.password}
@@ -61,7 +80,7 @@ export default function Signupclient({ onClose, setMode, previous }) {
               </label>
               <label>
                 <input
-                  type="text"
+                  type="password"
                   name="confirmPassword"
                   placeholder="confirmPassword"
                   value={form.confirmPassword}
@@ -104,6 +123,7 @@ export default function Signupclient({ onClose, setMode, previous }) {
                   onChange={handleChange}
                 />
               </label>
+              {error && <p style={{ color: "red" }}>{error}</p>}
               <button type="submit">Submit</button>
             </>
           </form>
