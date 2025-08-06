@@ -53,6 +53,7 @@ export default function Login() {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            className={styles.inputGreen}
           />
 
           <input
@@ -60,9 +61,10 @@ export default function Login() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className={styles.inputGreen}
           />
 
-          <button onClick={handleLogin}>Submit</button>
+          <button onClick={handleLogin}>Log In</button>
 
           {error && <p style={{ color: "red" }}>{error}</p>}
 
