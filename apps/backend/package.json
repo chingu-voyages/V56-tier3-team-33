@@ -5,6 +5,10 @@
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
+  "engines": {
+    "node": ">= 16.9.0 "
+  },
+  "engineStrict": true,
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
