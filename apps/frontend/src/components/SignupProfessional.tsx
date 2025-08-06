@@ -15,8 +15,8 @@ type FormState = {
   city: string;
   language: string;
   speciality: string;
-  qualification: string;
   number: string;
+  medical: string;
 };
 
 export default function SignupProfessional() {
@@ -33,8 +33,8 @@ export default function SignupProfessional() {
     city: "",
     language: "",
     speciality: "",
-    qualification: "",
     number: "",
+    medical: "",
   });
 
   const navigate = useNavigate();
@@ -94,6 +94,7 @@ export default function SignupProfessional() {
                   placeholder="Email"
                   value={form.email}
                   onChange={handleChange}
+                  style={{ border: "1px solid #639F2F" }}
                   required
                 />
                 <input
@@ -102,6 +103,7 @@ export default function SignupProfessional() {
                   placeholder="Password"
                   value={form.password}
                   onChange={handleChange}
+                  style={{ border: "1px solid #639F2F" }}
                   required
                 />
                 <input
@@ -110,6 +112,7 @@ export default function SignupProfessional() {
                   placeholder="Confirm Password"
                   value={form.confirmPassword}
                   onChange={handleChange}
+                  style={{ border: "1px solid #639F2F" }}
                   required
                 />
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -125,6 +128,7 @@ export default function SignupProfessional() {
                       name="gender"
                       value="male"
                       checked={form.gender === "male"}
+                      className={styles.inputGreen}
                       onChange={handleChange}
                     />
                     Male
@@ -135,6 +139,7 @@ export default function SignupProfessional() {
                       name="gender"
                       value="female"
                       checked={form.gender === "female"}
+                      className={styles.inputGreen}
                       onChange={handleChange}
                     />
                     Female
@@ -146,6 +151,7 @@ export default function SignupProfessional() {
                   placeholder="Name"
                   value={form.name}
                   onChange={handleChange}
+                  style={{ border: "1px solid #639F2F" }}
                   required
                 />
                 <input
@@ -154,16 +160,35 @@ export default function SignupProfessional() {
                   placeholder="Age"
                   value={form.age}
                   onChange={handleChange}
+                  style={{ border: "1px solid #639F2F" }}
                   required
                 />
-                <input
-                  type="text"
-                  name="number"
-                  placeholder="Phone Number"
-                  value={form.number}
-                  onChange={handleChange}
-                  required
-                />
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  Are you a medical professional?
+                  <div className={styles.radioChoice}>
+                    <label style={{ marginRight: "35px" }}>
+                      <input
+                        type="radio"
+                        name="medical"
+                        value="yes"
+                        onChange={handleChange}
+                      />
+                      Yes
+                    </label>
+
+                    <label>
+                      <input
+                        type="radio"
+                        name="medical"
+                        value="no"
+                        onChange={handleChange}
+                      />
+                      No
+                    </label>
+                  </div>
+                </div>
               </>
             )}
 
@@ -175,6 +200,7 @@ export default function SignupProfessional() {
                   placeholder="City"
                   value={form.city}
                   onChange={handleChange}
+                  style={{ border: "1px solid #639F2F" }}
                   required
                 />
                 <input
@@ -183,6 +209,7 @@ export default function SignupProfessional() {
                   placeholder="Language"
                   value={form.language}
                   onChange={handleChange}
+                  style={{ border: "1px solid #639F2F" }}
                   required
                 />
                 <input
@@ -191,14 +218,16 @@ export default function SignupProfessional() {
                   placeholder="Speciality"
                   value={form.speciality}
                   onChange={handleChange}
+                  style={{ border: "1px solid #639F2F" }}
                   required
                 />
                 <input
                   type="text"
-                  name="qualification"
-                  placeholder="Qualification"
-                  value={form.qualification}
+                  name="number"
+                  placeholder="Phone Number"
+                  value={form.number}
                   onChange={handleChange}
+                  style={{ border: "1px solid #639F2F" }}
                   required
                 />
               </>
@@ -206,18 +235,36 @@ export default function SignupProfessional() {
 
             <div style={{ marginTop: "1rem" }}>
               {step > 1 && (
-                <button type="button" onClick={handlePrevStep}>
+                <button
+                  type="button"
+                  onClick={handlePrevStep}
+                  style={{ marginRight: "1rem" }}
+                >
                   Previous
                 </button>
               )}
-
-              {step < 3 ? (
+              {step === 1 && (
                 <button type="button" onClick={handleNextStep}>
-                  Next
+                  next
                 </button>
-              ) : (
-                <button type="submit">join us</button>
               )}
+              {step === 2 && (
+                <>
+                  {form.medical === "yes" && (
+                    <button type="button" onClick={handleNextStep}>
+                      next
+                    </button>
+                  )}
+                  {form.medical === "no" && (
+                    <button type="submit">join us</button>
+                  )}
+                  {!form.medical && (
+                    <p style={{ color: "red" }}>Please select Yes or No</p>
+                  )}
+                </>
+              )}
+
+              {step === 3 && <button type="submit">join us</button>}
             </div>
           </form>
         </div>

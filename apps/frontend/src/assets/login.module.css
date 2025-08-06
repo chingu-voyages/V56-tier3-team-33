@@ -108,3 +108,16 @@
   top: 0px;
   padding: 0;
 }
+
+.radioChoice {
+  display: flex;
+  margin-right: 20px;
+}
+
+button {
+  background-color: #8db5d9;
+}
+
+.inputGreen {
+  border: 1px solid #639f2f;
+}
