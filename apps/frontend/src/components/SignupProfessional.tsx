@@ -258,9 +258,6 @@ export default function SignupProfessional() {
                   {form.medical === "no" && (
                     <button type="submit">join us</button>
                   )}
-                  {!form.medical && (
-                    <p style={{ color: "red" }}>Please select Yes or No</p>
-                  )}
                 </>
               )}
 
