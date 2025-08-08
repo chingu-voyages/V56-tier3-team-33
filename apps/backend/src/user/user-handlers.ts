@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { makeDb, makeId } from "../database/db.js";
 import type { Request, Response } from "express";
 import cities from "./cities.json" with { type: "json" };
 import languages from "./languages.json" with { type: "json" };
@@ -110,18 +111,90 @@ export async function registerExpert(req: Request, res: Response) {
 
   const passwordHash = await bcrypt.hash(req.body.password, 12);
 
-  {
-    // register
+  const id = makeId();
+  const pool = makeDb();
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const { rowCount: specialtyCount, rows: specialtyRows } =
+      await client.query(`SELECT id FROM specialties WHERE name = $1`, [
+        normalized.specialty,
+      ]);
+    if (!specialtyCount) {
+      throw new Error("specialty not found");
+    }
+
+    const { rowCount: langCount, rows: langRows } = await client.query(
+      `SELECT id FROM languages WHERE code = ANY($1)`,
+      [normalized.languages],
+    );
+    if (langCount != normalized.languages.length) {
+      const found = new Set(langRows.map((row) => row.code));
+      const missing = normalized.languages.filter((code) => !found.has(code));
+      throw new Error(`some languages not found: ${missing}`);
+    }
+
+    await client.query(
+      `
+      INSERT INTO users
+      (id, email, password_hash, full_name, date_of_birth, gender)
+      VALUES
+      ($1, $2, $3, $4, $5, $6)
+      RETURNING created_at, updated_at
+      `,
+      [
+        id,
+        normalized.email,
+        passwordHash,
+        normalized.name,
+        normalized.dateOfBirth,
+        normalized.gender,
+      ],
+    );
+
+    await client.query(
+      `
+        INSERT INTO experts (id, specialty_id, city, phone)
+        VALUES ($1, $2, $3, $4)
+      `,
+      [id, specialtyRows[0].id, normalized.city, normalized.phone],
+    );
+
+    const values = langRows.map((_, i) => "($1, $" + (i + 2) + ")").join(", ");
+    await client.query(
+      `
+        INSERT INTO experts_languages (expert_id, language_id)
+        VALUES ${values}
+      `,
+      [id, ...langRows.map((code) => code.id)],
+    );
+
+    await client.query("COMMIT");
+  } catch (err) {
+    await client.query("ROLLBACK");
+
+    if (err instanceof Error) {
+      console.error(err.message, err);
+    } else {
+      console.error("thrown error is not an instance of Error", err);
+    }
+
+    res.status(500).send();
+    return;
+  } finally {
+    client.release();
   }
 
   {
     // return token
   }
 
-  res.status(200).json({
+  res.status(201).json({
     message: "validation passed",
     data: req.body,
-    normalized: Object.assign(normalized, { password: passwordHash }),
+    normalized: Object.assign(normalized, { id, password: passwordHash }),
   });
 }
 
