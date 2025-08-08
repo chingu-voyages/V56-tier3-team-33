@@ -13,6 +13,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "dotenvx run -- tsx --watch src/server.ts",
+    "db:migrate": "dotenvx run -- tsx src/database/migrate.ts",
     "format": "npm run format:be --prefix ../../",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix"
