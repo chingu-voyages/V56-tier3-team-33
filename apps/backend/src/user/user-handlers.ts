@@ -2,8 +2,8 @@ import bcrypt from "bcrypt";
 import { createHmac } from "node:crypto";
 import { makeDb, makeId } from "../database/db.js";
 import type { Request, Response } from "express";
-import cities from "./cities.json" with { type: "json" };
-import languages from "./languages.json" with { type: "json" };
+import cities from "../data/cities.json" with { type: "json" };
+import languages from "../data/languages.json" with { type: "json" };
 
 const JWT_SECRET = process.env.JWT_HMAC_SECRET;
 if (!JWT_SECRET) {
