@@ -14,9 +14,7 @@ export async function registerExpert(req: Request, res: Response) {
       .join(" "),
     dateOfBirth: normalizeString(req.body.dateOfBirth),
     gender: normalizeString(req.body.gender).toUpperCase(),
-    specialties: normalizeArray(req.body.specialties).map((specialty) =>
-      specialty.toLowerCase(),
-    ),
+    specialty: normalizeString(req.body.specialty).toLowerCase(),
     city: normalizeString(req.body.city).toLowerCase(),
     phone: normalizeString(req.body.phone),
     languages: normalizeArray(req.body.languages).map((language) =>
@@ -68,11 +66,11 @@ export async function registerExpert(req: Request, res: Response) {
     });
   }
 
-  if (!areValidSpecialties(normalized.specialties)) {
+  if (!isValidSpecialty(normalized.specialty)) {
     errors.push({
-      field: "specialties",
-      value: req.body.specialties,
-      message: "Please select at least one specialty.",
+      field: "specialty",
+      value: req.body.specialty,
+      message: "Please enter a valid specialty.",
     });
   }
 
@@ -179,9 +177,9 @@ function isValidGender(gender: string) {
   return gender == "F" || gender == "M";
 }
 
-function areValidSpecialties(specialties: Array<string>) {
+function isValidSpecialty(specialty: string) {
   // TODO: properly validate specialties
-  return specialties.length > 0;
+  return specialty.length > 0 && specialty.length <= 50;
 }
 
 function isValidCity(city: string) {
