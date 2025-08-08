@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import type { Request, Response } from "express";
 import cities from "./cities.json" with { type: "json" };
+import languages from "./languages.json" with { type: "json" };
 
 export async function registerExpert(req: Request, res: Response) {
   // normalize
@@ -13,13 +14,13 @@ export async function registerExpert(req: Request, res: Response) {
       .join(" "),
     dateOfBirth: normalizeString(req.body.dateOfBirth),
     gender: normalizeString(req.body.gender).toUpperCase(),
+    specialties: normalizeArray(req.body.specialties).map((specialty) =>
+      specialty.toLowerCase(),
+    ),
     city: normalizeString(req.body.city).toLowerCase(),
     phone: normalizeString(req.body.phone),
     languages: normalizeArray(req.body.languages).map((language) =>
       language.toLowerCase(),
-    ),
-    specialties: normalizeArray(req.body.specialties).map((specialty) =>
-      specialty.toLowerCase(),
     ),
   };
 
@@ -67,6 +68,14 @@ export async function registerExpert(req: Request, res: Response) {
     });
   }
 
+  if (!areValidSpecialties(normalized.specialties)) {
+    errors.push({
+      field: "specialties",
+      value: req.body.specialties,
+      message: "Please select at least one specialty.",
+    });
+  }
+
   if (!isValidCity(normalized.city)) {
     errors.push({
       field: "city",
@@ -88,14 +97,6 @@ export async function registerExpert(req: Request, res: Response) {
       field: "languages",
       value: req.body.languages,
       message: "Please select at least one language.",
-    });
-  }
-
-  if (!areValidSpecialties(normalized.specialties)) {
-    errors.push({
-      field: "specialties",
-      value: req.body.specialties,
-      message: "Please select at least one specialty.",
     });
   }
 
@@ -178,6 +179,11 @@ function isValidGender(gender: string) {
   return gender == "F" || gender == "M";
 }
 
+function areValidSpecialties(specialties: Array<string>) {
+  // TODO: properly validate specialties
+  return specialties.length > 0;
+}
+
 function isValidCity(city: string) {
   // TODO: use country code to differentiate between same city names
   // TODO2: use a service like simplemaps
@@ -191,14 +197,12 @@ function isValidPhone(phone: string) {
   return phoneRegex.test(phone);
 }
 
-function areValidLanguages(languages: Array<string>) {
-  // TODO: properly validate languages
-  return languages.length > 0;
-}
-
-function areValidSpecialties(specialties: Array<string>) {
-  // TODO: properly validate specialties
-  return specialties.length > 0;
+function areValidLanguages(langCodes: Array<string>) {
+  // ISO 639-1 standard for language codes
+  return (
+    langCodes.length > 0 &&
+    langCodes.every((code) => Object.hasOwn(languages, code))
+  );
 }
 
 function normalizeArray(value: unknown) {
