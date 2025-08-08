@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import type { Request, Response } from "express";
 import cities from "./cities.json" with { type: "json" };
 
@@ -108,6 +109,8 @@ export async function registerExpert(req: Request, res: Response) {
     return;
   }
 
+  const passwordHash = await bcrypt.hash(req.body.password, 12);
+
   {
     // register
   }
@@ -116,9 +119,11 @@ export async function registerExpert(req: Request, res: Response) {
     // return token
   }
 
-  res
-    .status(200)
-    .json({ message: "validation passed", data: req.body, normalized });
+  res.status(200).json({
+    message: "validation passed",
+    data: req.body,
+    normalized: Object.assign(normalized, { password: passwordHash }),
+  });
 }
 
 function isValidEmail(email: string) {
