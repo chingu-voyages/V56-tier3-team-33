@@ -1,0 +1,32 @@
+.textIntro {
+  color: #0d3659;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 3px;
+  padding-left: 70px;
+}
+
+.imageProject {
+}
+
+.containerImageFilter {
+  display: flex;
+}
+
+.containerFilter {
+  width: 50%;
+}
+
+.containerImage {
+  width: 50%;
+  display: flex;
+  justify-content: end;
+  padding-right: 70px;
+}
+
+.textFilter {
+  font-size: 35px;
+  color: #0d3659;
+  line-height: 3px;
+  padding-left: 70px;
+}

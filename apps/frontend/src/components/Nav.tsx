@@ -8,14 +8,12 @@ type NavProps = {
 
 export default function Nav({ onLoginClick }: NavProps) {
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <header>
-        <div className={styles.navContainer}>
-          <div className={styles.navContainer2}>
-            <div className={styles.logoDetail}>
-              <p className={styles.logoDetailP1}>We</p>
-              <p className={styles.logoDetailP2}>Care</p>
-            </div>
+        <div className={styles.navContainer2}>
+          <div className={styles.logoDetail}>
+            <p className={styles.logoDetailP1}>We</p>
+            <p className={styles.logoDetailP2}>Care</p>
           </div>
 
           <Link
