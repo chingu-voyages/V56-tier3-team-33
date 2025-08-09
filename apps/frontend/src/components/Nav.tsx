@@ -1,12 +1,7 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../assets/nav.module.css";
 
-type NavProps = {
-  onLoginClick: () => void;
-};
-
-export default function Nav({ onLoginClick }: NavProps) {
+export default function Nav() {
   return (
     <div>
       <header>
@@ -18,14 +13,7 @@ export default function Nav({ onLoginClick }: NavProps) {
             </div>
           </div>
 
-          <Link
-            onClick={(e) => {
-              e.preventDefault();
-              onLoginClick();
-            }}
-            className={styles.loginDetail}
-            to="#"
-          >
+          <Link className={styles.loginDetail} to="/login">
             <div className={styles.loginDetail2}>Login</div>
           </Link>
         </div>

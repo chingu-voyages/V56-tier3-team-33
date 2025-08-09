@@ -14,7 +14,7 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-    "allowJs": true, //I add this to allow us to use JS
+    "allowJs": true,
 
     /* Linting */
     "strict": true,
