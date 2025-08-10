@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import styles from "../assets/login.module.css";
 import { useNavigate } from "react-router-dom";
@@ -72,7 +72,7 @@ export default function SignupProfessional() {
       <div className={styles.modaloverlay}>
         <div className={styles.modalcontent}>
           <button className={styles.closeTag} onClick={() => navigate("/")}>
-            X
+            &times;
           </button>
           <form
             onSubmit={handleSubmit}

@@ -1,13 +1,10 @@
 .navContainer {
-  width: 100%;
   display: flex;
+  justify-content: space-between;
 }
 
 .navContainer2 {
   display: flex;
-  justify-content: space-between;
-  padding-left: 50px;
-  padding-right: 70px;
 }
 
 .logoDetail {

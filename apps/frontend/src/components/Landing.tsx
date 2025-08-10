@@ -6,17 +6,12 @@ import Filterexpert from "./Filterexpert";
 import image2 from "../assets/Doctor Invite Photo 1.png";
 import { Link } from "react-router-dom";
 
-type Props = {};
-
 const Landing = () => {
-  const navigate = useNavigate();
-
-  const handleLoginClick = () => {
-    navigate("/login");
-  };
   return (
     <div className={styles.containerLanding}>
-      <Nav onLoginClick={handleLoginClick} />
+      <>
+        <Nav />
+      </>
       <div className={styles.textIntro}>
         <p>Find the right medical</p>
         <p>expert - anytime, anywhere</p>

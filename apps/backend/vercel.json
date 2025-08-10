@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm ci --workspace backend",
+  "devCommand": "npm run dev",
+  "buildCommand": "npm run build --workspace backend",
+  "outputDirectory": "/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/api/index.js" }]
+}

@@ -5,12 +5,11 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
   const navigate = useNavigate();
 
-  // 🔹 States pour les champs de formulaire
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
-  // 🔹 Fonction pour envoyer la requête à ton backend
   const handleLogin = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/login", {
@@ -45,31 +44,35 @@ export default function Login() {
         >
           <h2>Login</h2>
           <button className={styles.closeBtn1} onClick={() => navigate("/")}>
-            X
+            &times;
           </button>
 
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className={styles.inputGreen}
-          />
+          <form onSubmit={handleLogin}>
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className={styles.inputGreen}
+            />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={styles.inputGreen}
-          />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={styles.inputGreen}
+            />
 
-          <button onClick={handleLogin}>Log In</button>
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? "Loading..." : "Log In"}
+            </button>
+          </form>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className={styles.errorHandle}>{error}</p>}
 
           <p>
-            Have you an account?
+            Don't have an account?
             <span onClick={() => navigate("/signup")}> Sign up</span>
           </p>
         </div>

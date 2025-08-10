@@ -1,29 +1,19 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../assets/nav.module.css";
 
-type NavProps = {
-  onLoginClick: () => void;
-};
-
-export default function Nav({ onLoginClick }: NavProps) {
+export default function Nav() {
   return (
-    <div style={{ width: "100%" }}>
+    <div>
       <header>
-        <div className={styles.navContainer2}>
-          <div className={styles.logoDetail}>
-            <p className={styles.logoDetailP1}>We</p>
-            <p className={styles.logoDetailP2}>Care</p>
+        <div className={styles.navContainer}>
+          <div className={styles.navContainer2}>
+            <div className={styles.logoDetail}>
+              <p className={styles.logoDetailP1}>We</p>
+              <p className={styles.logoDetailP2}>Care</p>
+            </div>
           </div>
 
-          <Link
-            onClick={(e) => {
-              e.preventDefault();
-              onLoginClick();
-            }}
-            className={styles.loginDetail}
-            to="#"
-          >
+          <Link className={styles.loginDetail} to="/login">
             <div className={styles.loginDetail2}>Login</div>
           </Link>
         </div>
