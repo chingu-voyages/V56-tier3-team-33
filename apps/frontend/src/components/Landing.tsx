@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 type Props = {};
 
-const Landing = (props: Props) => {
+const Landing = () => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
