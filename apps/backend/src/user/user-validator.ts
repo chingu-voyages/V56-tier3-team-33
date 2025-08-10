@@ -1,19 +1,9 @@
 import cities from "../data/cities.json" with { type: "json" };
 import languages from "../data/languages.json" with { type: "json" };
 
-export interface NormalizedExpertDetails {
-  email: string;
-  password: string;
-  name: string;
-  dateOfBirth: string;
-  gender: string;
-  specialty: string;
-  city: string;
-  phone: string;
-  languages: string[];
-}
+import type { NormalizedExpertDetails } from "./user-types.js";
 
-export interface ExpertFieldError {
+interface ExpertFieldError {
   field: keyof NormalizedExpertDetails;
   message: string;
   value: unknown;

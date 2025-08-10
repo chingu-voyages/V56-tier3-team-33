@@ -1,4 +1,4 @@
-export interface RawExpertDetails {
+interface RawExpertDetails {
   email: unknown;
   password: unknown;
   name: unknown;
