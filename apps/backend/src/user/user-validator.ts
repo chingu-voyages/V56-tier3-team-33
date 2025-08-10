@@ -1,13 +1,10 @@
 import cities from "../data/cities.json" with { type: "json" };
 import languages from "../data/languages.json" with { type: "json" };
 
-import type { NormalizedExpertDetails } from "./user-types.js";
-
-interface ExpertFieldError {
-  field: keyof NormalizedExpertDetails;
-  message: string;
-  value: unknown;
-}
+import type {
+  ExpertFieldError,
+  NormalizedExpertDetails,
+} from "./user-types.js";
 
 export function validateExpertDetails(normalized: NormalizedExpertDetails) {
   const errors: ExpertFieldError[] = [];

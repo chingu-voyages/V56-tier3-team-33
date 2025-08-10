@@ -1,14 +1,4 @@
-interface RawExpertDetails {
-  email: unknown;
-  password: unknown;
-  name: unknown;
-  dateOfBirth: unknown;
-  gender: unknown;
-  specialty: unknown;
-  city: unknown;
-  phone: unknown;
-  languages: unknown;
-}
+import type { RawExpertDetails } from "./user-types.js";
 
 export function normalizeExpertDetails(raw: RawExpertDetails) {
   return {

@@ -1,3 +1,15 @@
+export interface RawExpertDetails {
+  email: unknown;
+  password: unknown;
+  name: unknown;
+  dateOfBirth: unknown;
+  gender: unknown;
+  specialty: unknown;
+  city: unknown;
+  phone: unknown;
+  languages: unknown;
+}
+
 export interface NormalizedExpertDetails {
   email: string;
   password: string;
@@ -8,6 +20,12 @@ export interface NormalizedExpertDetails {
   city: string;
   phone: string;
   languages: string[];
+}
+
+export interface ExpertFieldError {
+  field: keyof NormalizedExpertDetails;
+  message: string;
+  value: unknown;
 }
 
 export interface Expert extends NormalizedExpertDetails {
