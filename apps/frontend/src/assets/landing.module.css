@@ -6,9 +6,6 @@
   padding-left: 70px;
 }
 
-.imageProject {
-}
-
 .containerImageFilter {
   display: flex;
   margin-top: 50px;
@@ -32,13 +29,13 @@
   padding-left: 70px;
 }
 
-.containertext2 {
+.expertIntroSection {
   font-weight: bold;
   font-size: 35px;
   line-height: 3px;
 }
 
-.containertext3 {
+.expertDescription {
   font-weight: normal;
   padding-top: 3px;
 }
@@ -62,4 +59,24 @@
   border: 1px solid #ccc;
   font-size: 1rem;
   min-width: 180px;
+}
+
+.adjustmentMargin {
+  margin-top: 100px;
+}
+
+.containerImage2 {
+  display: flex;
+  justify-content: end;
+}
+
+.signupStyle {
+  display: inline-block;
+  padding: 26px 36px;
+  background: #8db5d9;
+  color: white;
+  text-decoration: none;
+  border-radius: "4px";
+  font-size: 22px;
+  font-weight: 1000;
 }
