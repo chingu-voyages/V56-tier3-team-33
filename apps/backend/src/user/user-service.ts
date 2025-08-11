@@ -13,8 +13,8 @@ import type {
 } from "./user-types.js";
 
 type RegisterExpertResult =
-  | { success: true; data: { token: string } }
-  | { success: false; errors: ExpertFieldError[] };
+  | { type: "success"; data: { token: string } }
+  | { type: "validation_error"; errors: ExpertFieldError[] };
 
 export async function registerExpert(
   details: RawExpertDetails,
@@ -24,7 +24,7 @@ export async function registerExpert(
 
   // TODO: switch from discriminated unions to a custom error
   if (errors.length) {
-    return { success: false, errors };
+    return { type: "validation_error", errors };
   }
 
   const expert = makeExpert(normalized);
@@ -32,7 +32,7 @@ export async function registerExpert(
 
   await userRepository.saveExpert(expert);
   const token = makeJWT({ id: expert.id, name: expert.name, role: "expert" });
-  return { success: true, data: { token } };
+  return { type: "success", data: { token } };
 }
 
 // TODO: if used somewhere else, extract it into its own file

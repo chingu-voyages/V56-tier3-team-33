@@ -6,7 +6,7 @@ import type { ExpertFieldError } from "./user-types.js";
 export async function registerExpert(req: Request, res: Response) {
   const result = await userService.registerExpert(req.body);
 
-  if (!result.success) {
+  if (result.type == "validation_error") {
     res.status(422).json(toErrorsMap(result.errors));
     return;
   }
