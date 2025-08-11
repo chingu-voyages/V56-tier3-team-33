@@ -1,0 +1,127 @@
+.modaloverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modalcontent {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  position: relative;
+  min-width: 25%;
+  min-height: 30%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modalcontent h2 {
+  margin-bottom: 15px;
+}
+
+.modalcontent input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-content button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #8db5d9;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.closeBtn1 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+}
+
+.closeTag {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: white;
+  border: none;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.firstStep {
+  padding-top: 70px;
+}
+
+.secondStep {
+  padding-top: 40px;
+}
+
+.thirdStep {
+  padding-top: 40px;
+}
+
+.radioButton {
+  display: flex;
+}
+
+.previousDesign {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.chooseFormDesign {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 110px;
+}
+
+.chooseFormDesign button {
+  width: 50%;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.closeBtn2 {
+  font-size: 14px;
+  position: absolute;
+  top: 0px;
+  padding: 0;
+}
+
+.radioChoice {
+  display: flex;
+  margin-right: 20px;
+}
+
+button {
+  background-color: #8db5d9;
+}
+
+.inputGreen {
+  border: 1px solid #639f2f;
+}
+
+.errorHandle {
+  color: red;
+}
