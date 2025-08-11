@@ -1,3 +1,4 @@
+import type React from "react";
 import { useState } from "react";
 import styles from "../assets/login.module.css";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +12,9 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const handleLogin = async () => {
+  // const handleLogin = async (e:React.Event) => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       const response = await fetch(`${BACKEND_ENDPOINT}/api/login`, {
         // Our backend Url
