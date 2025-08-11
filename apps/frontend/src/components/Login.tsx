@@ -2,9 +2,10 @@ import { useState } from "react";
 import styles from "../assets/login.module.css";
 import { useNavigate } from "react-router-dom";
 
+const BACKEND_ENDPOINT = import.meta.env.VITE_BACKEND_URL;
+
 export default function Login() {
   const navigate = useNavigate();
-
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -12,7 +13,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
+      const response = await fetch(`${BACKEND_ENDPOINT}/api/login`, {
         // Our backend Url
         method: "POST",
         headers: {
@@ -34,7 +35,6 @@ export default function Login() {
       setError("Invalid username or password");
     }
   };
-
   return (
     <div>
       <div className={styles.modaloverlay}>
