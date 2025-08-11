@@ -2,6 +2,29 @@ import type { PoolClient } from "pg";
 import { makeDb } from "../database/db.js";
 import type { Expert } from "./user-types.js";
 
+type ExpertRecord = {
+  id: string;
+  email: string;
+  password: string;
+  full_name: string;
+  date_of_birth: string;
+  gender: string;
+  specialty: string;
+  city: string;
+  phone: string;
+  languages: string[];
+  created_at: string;
+};
+
+type RenamedExpertKey<K> = K extends "full_name"
+  ? "name"
+  : K extends "date_of_birth"
+    ? "dateOfBirth"
+    : K;
+type MappedExpertRecord<T extends Partial<ExpertRecord>> = {
+  [K in keyof T as RenamedExpertKey<K>]: T[K];
+};
+
 export async function saveExpert(expert: Expert) {
   return withTransaction(async (client) => {
     const { rowCount: specialtyCount, rows: specialtyRows } =
@@ -58,6 +81,16 @@ export async function saveExpert(expert: Expert) {
   });
 }
 
+export async function findByEmail(email: string) {
+  const pool = makeDb();
+
+  const { rows } = await pool.query<ExpertRecord>(
+    `SELECT * FROM users JOIN experts ON users.id = experts.id WHERE email = $1`,
+    [email],
+  );
+  return rows[0] && toMappedExpert(rows[0]);
+}
+
 async function withTransaction(cb: (client: PoolClient) => Promise<unknown>) {
   const pool = makeDb();
   const client = await pool.connect();
@@ -79,4 +112,26 @@ async function withTransaction(cb: (client: PoolClient) => Promise<unknown>) {
   } finally {
     client.release();
   }
+}
+
+function toMappedExpert<T extends Partial<ExpertRecord>>(
+  record: T,
+): MappedExpertRecord<T> {
+  const mappedObject = {} as MappedExpertRecord<T>;
+
+  for (const key in record) {
+    let mappedKey = key as keyof MappedExpertRecord<T>;
+
+    if (key === "full_name") {
+      mappedKey = "name";
+    } else if (key === "date_of_birth") {
+      mappedKey = "dateOfBirth";
+    }
+
+    // workaround because ts has problems not recognizing the index type
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (mappedObject as any)[mappedKey] = record[key];
+  }
+
+  return mappedObject;
 }

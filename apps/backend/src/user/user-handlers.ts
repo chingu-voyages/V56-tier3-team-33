@@ -11,6 +11,11 @@ export async function registerExpert(req: Request, res: Response) {
     return;
   }
 
+  if (result.type == "conflict") {
+    res.status(409).json(toErrorsMap(result.errors));
+    return;
+  }
+
   res.status(201).json({ message: "user created", ...result.data });
 }
 

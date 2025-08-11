@@ -14,7 +14,8 @@ import type {
 
 type RegisterExpertResult =
   | { type: "success"; data: { token: string } }
-  | { type: "validation_error"; errors: ExpertFieldError[] };
+  | { type: "validation_error"; errors: ExpertFieldError[] }
+  | { type: "conflict"; errors: ExpertFieldError[] };
 
 export async function registerExpert(
   details: RawExpertDetails,
@@ -25,6 +26,16 @@ export async function registerExpert(
   // TODO: switch from discriminated unions to a custom error
   if (errors.length) {
     return { type: "validation_error", errors };
+  }
+
+  const isEmailTaken = await userRepository.findByEmail(normalized.email);
+  if (isEmailTaken) {
+    return {
+      type: "conflict",
+      errors: [
+        { field: "email", message: "Email is taken.", value: normalized.email },
+      ],
+    };
   }
 
   const expert = makeExpert(normalized);
