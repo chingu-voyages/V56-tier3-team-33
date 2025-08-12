@@ -2,6 +2,12 @@ import type { PoolClient } from "pg";
 import { makeDb } from "../database/db.js";
 import type { Expert } from "./user-types.js";
 
+const ColumnsMap = {
+  password_hash: "password",
+  full_name: "name",
+  date_of_birth: "dateOfBirth",
+} as const;
+
 type ExpertRecord = {
   id: string;
   email: string;
@@ -16,15 +22,13 @@ type ExpertRecord = {
   created_at: string;
 };
 
-type RenamedExpertKey<K> = K extends "password_hash"
-  ? "password"
-  : K extends "full_name"
-    ? "name"
-    : K extends "date_of_birth"
-      ? "dateOfBirth"
-      : K;
+type RenamedExpertKey<K extends keyof typeof ColumnsMap> =
+  (typeof ColumnsMap)[K];
+
 type MappedExpertRecord<T extends Partial<ExpertRecord>> = {
-  [K in keyof T as RenamedExpertKey<K>]: T[K];
+  [K in keyof T as K extends keyof typeof ColumnsMap
+    ? RenamedExpertKey<K>
+    : K]: T[K];
 };
 
 export async function saveExpert(expert: Expert) {
@@ -124,12 +128,8 @@ function toMappedExpert<T extends Partial<ExpertRecord>>(
   for (const key in record) {
     let mappedKey = key as keyof MappedExpertRecord<T>;
 
-    if (key === "password_hash") {
-      mappedKey = "password";
-    } else if (key === "full_name") {
-      mappedKey = "name";
-    } else if (key === "date_of_birth") {
-      mappedKey = "dateOfBirth";
+    if (key in ColumnsMap) {
+      mappedKey = ColumnsMap[key as keyof typeof ColumnsMap];
     }
 
     // workaround because ts has problems not recognizing the index type
