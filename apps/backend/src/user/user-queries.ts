@@ -5,7 +5,7 @@ import type { Expert } from "./user-types.js";
 type ExpertRecord = {
   id: string;
   email: string;
-  password: string;
+  password_hash: string;
   full_name: string;
   date_of_birth: string;
   gender: string;
@@ -16,11 +16,13 @@ type ExpertRecord = {
   created_at: string;
 };
 
-type RenamedExpertKey<K> = K extends "full_name"
-  ? "name"
-  : K extends "date_of_birth"
-    ? "dateOfBirth"
-    : K;
+type RenamedExpertKey<K> = K extends "password_hash"
+  ? "password"
+  : K extends "full_name"
+    ? "name"
+    : K extends "date_of_birth"
+      ? "dateOfBirth"
+      : K;
 type MappedExpertRecord<T extends Partial<ExpertRecord>> = {
   [K in keyof T as RenamedExpertKey<K>]: T[K];
 };
@@ -122,7 +124,9 @@ function toMappedExpert<T extends Partial<ExpertRecord>>(
   for (const key in record) {
     let mappedKey = key as keyof MappedExpertRecord<T>;
 
-    if (key === "full_name") {
+    if (key === "password_hash") {
+      mappedKey = "password";
+    } else if (key === "full_name") {
       mappedKey = "name";
     } else if (key === "date_of_birth") {
       mappedKey = "dateOfBirth";
