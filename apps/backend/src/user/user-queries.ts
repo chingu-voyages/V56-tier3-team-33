@@ -91,9 +91,29 @@ export async function findByEmail(email: string) {
   const pool = makeDb();
 
   const { rows } = await pool.query<ExpertRecord>(
-    `SELECT * FROM users LEFT JOIN experts ON users.id = experts.id WHERE email = $1`,
+    `
+      SELECT
+        users.id AS id,
+        email,
+        password_hash,
+        full_name,
+        date_of_birth,
+        gender,
+        specialties.name AS specialty,
+        city,
+        phone,
+        array_agg(DISTINCT languages.code) as languages
+      FROM users
+      LEFT JOIN experts ON users.id = experts.id
+      JOIN specialties ON experts.specialty_id = specialties.id
+      JOIN experts_languages ON experts.id = experts_languages.expert_id
+      JOIN languages ON experts_languages.language_id = languages.id
+      WHERE email = $1
+      GROUP BY users.id, email, full_name, date_of_birth, gender, specialty, city, phone
+    `,
     [email],
   );
+
   return rows[0] && toMappedExpert(rows[0]);
 }
 
