@@ -91,7 +91,7 @@ export async function findByEmail(email: string) {
   const pool = makeDb();
 
   const { rows } = await pool.query<ExpertRecord>(
-    `SELECT * FROM users JOIN experts ON users.id = experts.id WHERE email = $1`,
+    `SELECT * FROM users LEFT JOIN experts ON users.id = experts.id WHERE email = $1`,
     [email],
   );
   return rows[0] && toMappedExpert(rows[0]);
