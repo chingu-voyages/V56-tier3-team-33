@@ -8,22 +8,8 @@ import type {
 
 export function validateExpertDetails(normalized: NormalizedExpertDetails) {
   const errors: ExpertFieldError[] = [];
-  if (!isValidEmail(normalized.email)) {
-    errors.push({
-      field: "email",
-      value: normalized.email,
-      message: "Email must be a valid address.",
-    });
-  }
 
-  if (!isValidPassword(normalized.password)) {
-    errors.push({
-      field: "password",
-      value: normalized.password,
-      message:
-        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.",
-    });
-  }
+  Object.assign(errors, validateLoginDetails(normalized));
 
   if (!isValidName(normalized.name)) {
     errors.push({
@@ -79,6 +65,31 @@ export function validateExpertDetails(normalized: NormalizedExpertDetails) {
       field: "languages",
       value: normalized.languages,
       message: "Please select at least one language.",
+    });
+  }
+
+  return errors;
+}
+
+export function validateLoginDetails(
+  normalized: Pick<NormalizedExpertDetails, "email" | "password">,
+) {
+  const errors: ExpertFieldError[] = [];
+
+  if (!isValidEmail(normalized.email)) {
+    errors.push({
+      field: "email",
+      value: normalized.email,
+      message: "Email must be a valid address.",
+    });
+  }
+
+  if (!isValidPassword(normalized.password)) {
+    errors.push({
+      field: "password",
+      value: normalized.password,
+      message:
+        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.",
     });
   }
 

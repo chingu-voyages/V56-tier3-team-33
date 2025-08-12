@@ -2,8 +2,7 @@ import type { RawExpertDetails } from "./user-types.js";
 
 export function normalizeExpertDetails(raw: RawExpertDetails) {
   return {
-    email: normalizeString(raw.email).toLowerCase(),
-    password: String(raw.password),
+    ...normalizeLoginDetails(raw),
     name: normalizeString(raw.name)
       .split(/\s+/)
       .map((part) => part.toLowerCase())
@@ -14,6 +13,15 @@ export function normalizeExpertDetails(raw: RawExpertDetails) {
     city: normalizeString(raw.city).toLowerCase(),
     phone: normalizeString(raw.phone),
     languages: normalizeArray(raw.languages).map((lang) => lang.toLowerCase()),
+  };
+}
+
+export function normalizeLoginDetails(
+  raw: Pick<RawExpertDetails, "email" | "password">,
+) {
+  return {
+    email: normalizeString(raw.email).toLowerCase(),
+    password: String(raw.password),
   };
 }
 
