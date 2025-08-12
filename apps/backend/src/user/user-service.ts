@@ -1,13 +1,7 @@
 import bcrypt from "bcrypt";
 import * as userRepository from "./user-queries.js";
-import {
-  normalizeExpertDetails,
-  normalizeLoginDetails,
-} from "./user-normalizer.js";
-import {
-  validateExpertDetails,
-  validateLoginDetails,
-} from "./user-validator.js";
+import * as userNormalizer from "./user-normalizer.js";
+import * as userValidator from "./user-validator.js";
 import { makeId } from "../database/db.js";
 import { makeJWT } from "./jwt.js";
 
@@ -36,8 +30,8 @@ const Roles = {
 export async function registerExpert(
   details: RawExpertDetails,
 ): Promise<RegisterExpertResult> {
-  const normalized = normalizeExpertDetails(details);
-  const errors = validateExpertDetails(normalized);
+  const normalized = userNormalizer.normalizeExpertDetails(details);
+  const errors = userValidator.validateExpertDetails(normalized);
 
   // TODO: switch from discriminated unions to a custom error
   if (errors.length) {
@@ -58,15 +52,19 @@ export async function registerExpert(
   expert.password = await bcrypt.hash(normalized.password, 12);
 
   await userRepository.saveExpert(expert);
-  const token = makeJWT({ id: expert.id, name: expert.name, role: "expert" });
+  const token = makeJWT({
+    id: expert.id,
+    name: expert.name,
+    role: Roles.EXPERT,
+  });
   return { type: "success", data: { token } };
 }
 
 export async function login(
   details: Pick<RawExpertDetails, "email" | "password">,
 ): Promise<LoginResult> {
-  const normalized = normalizeLoginDetails(details);
-  const errors = validateLoginDetails(normalized);
+  const normalized = userNormalizer.normalizeLoginDetails(details);
+  const errors = userValidator.validateLoginDetails(normalized);
 
   // TODO: switch from discriminated unions to a custom error
   if (errors.length) {
@@ -92,11 +90,7 @@ export async function login(
     };
   }
 
-  let role: (typeof Roles)[keyof typeof Roles] = Roles.USER;
-  if (user.specialty) {
-    // only experts have a specialty
-    role = Roles.EXPERT;
-  }
+  const role = user.specialty ? Roles.EXPERT : Roles.USER;
 
   const token = makeJWT({ id: user.id, name: user.name, role });
   return { type: "success", data: { token } };
