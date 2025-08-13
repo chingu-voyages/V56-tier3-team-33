@@ -10,6 +10,10 @@ type ExpertRecord = {
   languages: string[];
 };
 
+export async function getExperts(req: Request, res: Response) {
+  res.status(200).json({ message: "expert list api endpoint hit!" });
+}
+
 export async function getExpertDetails(req: Request, res: Response) {
   const id = req.params.id!;
 
