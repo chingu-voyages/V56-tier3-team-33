@@ -12,19 +12,34 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  // const handleLogin = async (e:React.Event) => {
-  const handleLogin = async (e: React.FormEvent) => {
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+
     try {
       const data = await userService.login({ email, password });
-      console.log("Login successful", data);
 
-      navigate("/");
+      switch (data.type) {
+        case "unknown_error":
+          console.error(data.error, data.status);
+          setError(data.error);
+          break;
+        case "validation_error":
+          setError(data.errors.map(({ message }) => message).join("\n"));
+          break;
+        case "error":
+          setError(data.error);
+          break;
+        case "success":
+          setEmail("");
+          setPassword("");
+          navigate("/");
+      }
     } catch (err) {
       console.error(err);
-      setError("Invalid email or password");
+      setError((err as Error).message);
     }
-  };
+  }
+
   return (
     <div>
       <div className={styles.modaloverlay}>
