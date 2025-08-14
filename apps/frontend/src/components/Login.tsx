@@ -1,9 +1,9 @@
-import type React from "react";
 import { useState } from "react";
-import styles from "../assets/login.module.css";
 import { useNavigate } from "react-router-dom";
+import * as userService from "../services/user";
 
-const BACKEND_ENDPOINT = import.meta.env.VITE_BACKEND_URL;
+import styles from "../assets/login.module.css";
+import type React from "react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,20 +16,7 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${BACKEND_ENDPOINT}/api/v1/user/login`, {
-        // Our backend Url
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Invalid credentials");
-      }
-
-      const data = await response.json();
+      const data = await userService.login({ email, password });
       console.log("Login successful", data);
 
       navigate("/");
