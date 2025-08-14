@@ -3,8 +3,6 @@ import type { ChangeEvent, FormEvent } from "react";
 import styles from "../assets/login.module.css";
 import { useNavigate } from "react-router-dom";
 
-type Props = {};
-
 type FormState = {
   email: string;
   password: string;
