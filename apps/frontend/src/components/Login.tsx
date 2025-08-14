@@ -7,7 +7,7 @@ const BACKEND_ENDPOINT = import.meta.env.VITE_BACKEND_URL;
 
 export default function Login() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -22,7 +22,7 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
@@ -35,7 +35,7 @@ export default function Login() {
       navigate("/");
     } catch (err) {
       console.error(err);
-      setError("Invalid username or password");
+      setError("Invalid email or password");
     }
   };
   return (
@@ -52,10 +52,10 @@ export default function Login() {
 
           <form onSubmit={handleLogin}>
             <input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              placeholder="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className={styles.inputGreen}
             />
 
