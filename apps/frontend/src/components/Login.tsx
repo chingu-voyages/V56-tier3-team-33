@@ -16,7 +16,7 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${BACKEND_ENDPOINT}/api/login`, {
+      const response = await fetch(`${BACKEND_ENDPOINT}/api/v1/user/login`, {
         // Our backend Url
         method: "POST",
         headers: {
