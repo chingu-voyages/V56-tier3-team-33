@@ -1,7 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react"; // ✅ Ajouter useEffect ici
 import styles from "../assets/landing.module.css";
-const cities = ["Paris", "London", "Shanghai", "Beijing", "Bern", "Lausanne"];
+import { Combobox } from "./Combobox"; // 🔁 Remplace `ComboboxDemo` par `Combobox`
+
+type ComboboxItem = {
+  value: string;
+  label: string;
+};
+
 const specialities = [
   "Cardiology",
   "Dermatology",
@@ -12,12 +18,40 @@ const specialities = [
 
 export default function Filterexpert() {
   const [city, setCity] = useState<string>("");
+  const [cities, setCities] = useState<ComboboxItem[]>([]); // ✅ Nouveau state
+  const [loadingCities, setLoadingCities] = useState(true); // ✅ Nouveau state
+  const [error, setError] = useState<string | null>(null); // ✅ Nouveau state
   const [speciality, setSpeciality] = useState<string>("");
   const navigate = useNavigate();
 
-  //const submitButtonFunction = () => {
-  //navigate(`/result?city=${encodeURIComponent(city)}&specialite=${encodeURIComponent(speciality)}`);
-  //}
+  // ✅ FETCH des villes depuis l'API
+  useEffect(() => {
+    async function fetchCities() {
+      try {
+        const response = await fetch("http://localhost:3000/api/cities"); // 🔁 Met l’URL de ton API ici
+        if (!response.ok) {
+          throw new Error("Failed to load cities");
+        }
+
+        const data = await response.json();
+
+        // 🔁 Si API retourne juste ["Paris", "London"], on formate
+        const formatted =
+          typeof data[0] === "string"
+            ? data.map((city: string) => ({ value: city, label: city }))
+            : data;
+
+        setCities(formatted);
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoadingCities(false);
+      }
+    }
+
+    fetchCities();
+  }, []);
+
   const submitButtonFunction = () => {
     navigate(
       `/result?city=${encodeURIComponent(city)}&specialite=${encodeURIComponent(speciality)}`,
@@ -30,15 +64,21 @@ export default function Filterexpert() {
     <div style={{ paddingLeft: "70px" }}>
       <div>
         <label className={styles.inputLabel}>
-          <select value={city} onChange={(e) => setCity(e.target.value)}>
-            <option value="">Choose your city</option>
-            {cities.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
+          {/* 🔁 Remplace ici le <ComboboxDemo /> */}
+          {loadingCities ? (
+            <p>Loading cities...</p> // ✅ Affiche pendant chargement
+          ) : error ? (
+            <p style={{ color: "red" }}>Error: {error}</p> // ✅ En cas d’erreur
+          ) : (
+            <Combobox
+              items={cities}
+              selectedValue={city}
+              onChange={setCity}
+              placeholder="Choose your city"
+            />
+          )}
         </label>
+
         <label className={styles.inputLabel}>
           <select
             value={speciality}
@@ -53,6 +93,7 @@ export default function Filterexpert() {
           </select>
         </label>
       </div>
+
       <button
         onClick={submitButtonFunction}
         disabled={buttonDisable}
