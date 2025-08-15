@@ -1,6 +1,5 @@
 import Nav from "./Nav";
 import styles from "../assets/landing.module.css";
-import { useNavigate } from "react-router-dom";
 import image from "../assets/hero 1.png";
 import Filterexpert from "./Filterexpert";
 import image2 from "../assets/Doctor Invite Photo 1.png";

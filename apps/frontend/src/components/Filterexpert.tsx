@@ -10,9 +10,7 @@ const specialities = [
   "Psychastry",
 ];
 
-type Props = {};
-
-const Filterexpert = (props: Props) => {
+export default function Filterexpert() {
   const [city, setCity] = useState<string>("");
   const [speciality, setSpeciality] = useState<string>("");
   const navigate = useNavigate();
@@ -64,6 +62,4 @@ const Filterexpert = (props: Props) => {
       </button>
     </div>
   );
-};
-
-export default Filterexpert;
+}

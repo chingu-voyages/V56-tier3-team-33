@@ -1,7 +1,3 @@
-type Props = {};
-
-const Expertlist = (props: Props) => {
+export default function Expertlist() {
   return <div>Expertlist</div>;
-};
-
-export default Expertlist;
+}
