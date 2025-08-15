@@ -5,6 +5,9 @@ export const AuthContext = createContext<AuthContextType>({
   login: () => {
     throw new Error("AuthProvider not detected as a parent node");
   },
+  logout: () => {
+    throw new Error("AuthProvider not detected as a parent node");
+  },
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -25,8 +28,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("token", token);
   }
 
+  function logout() {
+    setToken(undefined);
+    setUser(undefined);
+    localStorage.removeItem("token");
+  }
+
   return (
-    <AuthContext.Provider value={{ token, user, login }}>
+    <AuthContext.Provider value={{ token, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -43,4 +52,5 @@ type AuthContextType = {
   token?: string;
   user?: User;
   login: (token: string) => void;
+  logout: () => void;
 };
