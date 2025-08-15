@@ -11,22 +11,38 @@ type ExpertRecord = {
 };
 
 export async function getExperts(req: Request, res: Response) {
+  const { specialty } = req.query;
+
+  let query = `SELECT
+      users.id AS id,
+      users.full_name AS name,
+      gender,
+      specialties.name AS specialty,
+      city,
+      array_agg(languages.code) AS languages
+    FROM users
+    JOIN experts ON users.id = experts.id
+    JOIN specialties ON experts.specialty_id = specialties.id
+    JOIN experts_languages ON experts.id = experts_languages.expert_id
+    JOIN languages ON experts_Languages.language_id = languages.id
+    GROUP BY users.id, users.full_name, gender, specialties.name, city
+  `;
+
+  if (specialty) {
+    const [start, end] = query.split("GROUP BY");
+    const queryParts = [start, "WHERE specialties.name = $1", "GROUP BY" + end];
+
+    query = queryParts.join(" ");
+  }
+
   try {
-    const data = await makeDb().query<ExpertRecord>(`
-      SELECT
-        users.id AS id,
-        users.full_name AS name,
-        gender,
-        specialties.name AS specialty,
-        city,
-        array_agg(languages.code) AS languages
-      FROM users
-      JOIN experts ON users.id = experts.id
-      JOIN specialties ON experts.specialty_id = specialties.id
-      JOIN experts_languages ON experts.id = experts_languages.expert_id
-      JOIN languages ON experts_Languages.language_id = languages.id
-      GROUP BY users.id, users.full_name, gender, specialties.name, city
-    `);
+    let data;
+    if (specialty) {
+      data = await makeDb().query<ExpertRecord>(query, [specialty]);
+    } else {
+      data = await makeDb().query<ExpertRecord>(query);
+    }
+
     const result = { experts: data.rows };
     res.status(200).json(result);
   } catch (error) {
