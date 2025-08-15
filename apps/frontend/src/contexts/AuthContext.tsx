@@ -42,8 +42,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 function decodeUserFromToken(token: string): User {
-  const { sub, name, role } = JSON.parse(atob(token.split(".")[1]));
-  return { id: sub, name, role };
+  try {
+    const { sub, name, role } = JSON.parse(atob(token.split(".")[1]));
+    return { id: sub, name, role };
+  } catch (err) {
+    throw new Error("Invalid token format.", { cause: err });
+  }
 }
 
 type User = { id: string; name: string; role: string };
