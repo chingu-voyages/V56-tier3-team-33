@@ -12,20 +12,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => localStorage.getItem("token") || undefined,
   );
   const [user, setUser] = useState<User | undefined>(() => {
-    if (!token) {
-      return;
+    if (token) {
+      return decodeUserFromToken(token);
     }
-    const { sub, name, role } = JSON.parse(atob(token.split(".")[1]));
-    return { id: sub, name, role };
   });
 
   function login(token: string) {
-    const { sub, name, role } = JSON.parse(atob(token.split(".")[1]));
-    const user = { id: sub, name, role };
+    const user = decodeUserFromToken(token);
 
     setToken(token);
     setUser(user);
-
     localStorage.setItem("token", token);
   }
 
@@ -34,6 +30,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
+}
+
+function decodeUserFromToken(token: string): User {
+  const { sub, name, role } = JSON.parse(atob(token.split(".")[1]));
+  return { id: sub, name, role };
 }
 
 type User = { id: string; name: string; role: string };
