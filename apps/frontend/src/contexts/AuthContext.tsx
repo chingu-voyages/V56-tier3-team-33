@@ -1,7 +1,6 @@
-import { createContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const AuthContext = createContext<AuthContextType>({
+const AuthContext = createContext<AuthContextType>({
   login: () => {
     throw new Error("AuthProvider not detected as a parent node");
   },
@@ -9,6 +8,11 @@ export const AuthContext = createContext<AuthContextType>({
     throw new Error("AuthProvider not detected as a parent node");
   },
 });
+
+// eslint-disable-next-line react-refresh/only-export-components
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | undefined>(

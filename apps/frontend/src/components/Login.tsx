@@ -1,13 +1,13 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as userService from "../services/user";
+import { useAuth } from "../contexts/AuthContext";
 
 import styles from "../assets/login.module.css";
 import type { FormEvent } from "react";
-import { AuthContext } from "../contexts/AuthContext";
 
 export default function Login() {
-  const authContext = useContext(AuthContext);
+  const authContext = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");
