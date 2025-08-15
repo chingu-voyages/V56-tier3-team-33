@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as userService from "../services/user";
 
 import styles from "../assets/login.module.css";
 import type { FormEvent } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Login() {
+  const authContext = useContext(AuthContext);
   const navigate = useNavigate();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -35,6 +38,8 @@ export default function Login() {
           setError(data.error);
           break;
         case "success":
+          authContext.login(data.token);
+
           setEmail("");
           setPassword("");
           navigate("/");
