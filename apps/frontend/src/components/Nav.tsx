@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import styles from "../assets/nav.module.css";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Nav() {
+  const authContext = useAuth();
   return (
     <div>
       <header>
@@ -13,9 +15,19 @@ export default function Nav() {
             </div>
           </div>
 
-          <Link className={styles.loginDetail} to="/login">
-            <div className={styles.loginDetail2}>Login</div>
-          </Link>
+          {authContext.user ? (
+            <button
+              onClick={() => {
+                authContext.logout();
+              }}
+            >
+              Log out
+            </button>
+          ) : (
+            <Link className={styles.loginDetail} to="/login">
+              <div className={styles.loginDetail2}>Login</div>
+            </Link>
+          )}
         </div>
       </header>
     </div>
