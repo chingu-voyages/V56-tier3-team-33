@@ -11,7 +11,7 @@ export async function registerExpert(req: Request, res: Response) {
   }
 
   if (result.type == "conflict") {
-    res.status(409).json({ errors: result.errors });
+    res.status(409).json({ error: result.message });
     return;
   }
 

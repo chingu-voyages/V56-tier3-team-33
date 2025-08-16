@@ -15,7 +15,7 @@ import type {
 type RegisterExpertResult =
   | { type: "success"; data: { token: string } }
   | { type: "validation_error"; errors: ExpertFieldError[] }
-  | { type: "conflict"; errors: ExpertFieldError[] };
+  | { type: "conflict"; message: string };
 
 type LoginResult =
   | { type: "success"; data: { token: string } }
@@ -40,12 +40,7 @@ export async function registerExpert(
 
   const isEmailTaken = await userRepository.findByEmail(normalized.email);
   if (isEmailTaken) {
-    return {
-      type: "conflict",
-      errors: [
-        { field: "email", message: "Email is taken.", value: normalized.email },
-      ],
-    };
+    return { type: "conflict", message: "Email is taken." };
   }
 
   const expert = makeExpert(normalized);
