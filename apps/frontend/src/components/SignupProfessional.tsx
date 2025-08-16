@@ -3,37 +3,56 @@ import type { ChangeEvent, FormEvent } from "react";
 import styles from "../assets/login.module.css";
 import { useNavigate } from "react-router-dom";
 
-type FormState = {
+type WithChangeHandler<T> = T & {
+  handleChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+};
+
+type AccountFormValues = {
   email: string;
   password: string;
   confirmPassword: string;
+};
+
+type BasicFormValues = {
   name: string;
   age: string;
   gender: string;
-  city: string;
-  language: string;
-  speciality: string;
-  number: string;
 };
 
-export default function SignupProfessional() {
-  const [step, setStep] = useState<number>(1);
-  const [error, setError] = useState<string>("");
+type JobFormValues = {
+  specialty: string;
+  city: string;
+  phone: string;
+  language: string;
+};
 
-  const [form, setForm] = useState<FormState>({
+type FormValues = AccountFormValues & BasicFormValues & JobFormValues;
+
+export default function SignupProfessional() {
+  const navigate = useNavigate();
+
+  const [error, setError] = useState("");
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState<FormValues>({
     email: "",
     password: "",
     confirmPassword: "",
     name: "",
     age: "",
     gender: "",
+    specialty: "",
     city: "",
+    phone: "",
     language: "",
-    speciality: "",
-    number: "",
   });
 
-  const navigate = useNavigate();
+  function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
 
   const handleNextStep = () => {
     if (step === 1 && form.password !== form.confirmPassword) {
@@ -47,14 +66,6 @@ export default function SignupProfessional() {
   const handlePrevStep = () => {
     setError("");
     setStep((prev) => prev - 1);
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -82,124 +93,31 @@ export default function SignupProfessional() {
           }`}
         >
           {step === 1 && (
-            <>
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={form.email}
-                onChange={handleChange}
-                style={{ border: "1px solid #639F2F" }}
-                required
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={form.password}
-                onChange={handleChange}
-                style={{ border: "1px solid #639F2F" }}
-                required
-              />
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                value={form.confirmPassword}
-                onChange={handleChange}
-                style={{ border: "1px solid #639F2F" }}
-                required
-              />
-              {error && <p style={{ color: "red" }}>{error}</p>}
-            </>
+            <AccountDetails
+              email={form.email}
+              password={form.password}
+              confirmPassword={form.confirmPassword}
+              handleChange={handleChange}
+            />
           )}
 
           {step === 2 && (
-            <>
-              <div className={styles.radioButton}>
-                <label>
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="male"
-                    checked={form.gender === "male"}
-                    className={styles.inputGreen}
-                    onChange={handleChange}
-                  />
-                  Male
-                </label>
-                <label style={{ marginLeft: "1rem" }}>
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="female"
-                    checked={form.gender === "female"}
-                    className={styles.inputGreen}
-                    onChange={handleChange}
-                  />
-                  Female
-                </label>
-              </div>
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={form.name}
-                onChange={handleChange}
-                style={{ border: "1px solid #639F2F" }}
-                required
-              />
-              <input
-                type="number"
-                name="age"
-                placeholder="Age"
-                value={form.age}
-                onChange={handleChange}
-                style={{ border: "1px solid #639F2F" }}
-                required
-              />
-            </>
+            <BasicDetails
+              name={form.name}
+              age={form.age}
+              gender={form.gender}
+              handleChange={handleChange}
+            />
           )}
 
           {step === 3 && (
-            <>
-              <input
-                type="text"
-                name="city"
-                placeholder="City"
-                value={form.city}
-                onChange={handleChange}
-                style={{ border: "1px solid #639F2F" }}
-                required
-              />
-              <input
-                type="text"
-                name="language"
-                placeholder="Language"
-                value={form.language}
-                onChange={handleChange}
-                style={{ border: "1px solid #639F2F" }}
-                required
-              />
-              <input
-                type="text"
-                name="speciality"
-                placeholder="Speciality"
-                value={form.speciality}
-                onChange={handleChange}
-                style={{ border: "1px solid #639F2F" }}
-                required
-              />
-              <input
-                type="text"
-                name="number"
-                placeholder="Phone Number"
-                value={form.number}
-                onChange={handleChange}
-                style={{ border: "1px solid #639F2F" }}
-                required
-              />
-            </>
+            <JobDetails
+              specialty={form.specialty}
+              city={form.city}
+              phone={form.phone}
+              language={form.language}
+              handleChange={handleChange}
+            />
           )}
 
           <div style={{ marginTop: "1rem" }}>
@@ -221,8 +139,157 @@ export default function SignupProfessional() {
               </button>
             )}
           </div>
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
         </form>
       </div>
     </div>
+  );
+}
+
+// step 1
+function AccountDetails({
+  email,
+  password,
+  confirmPassword,
+  handleChange,
+}: WithChangeHandler<AccountFormValues>) {
+  return (
+    <>
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={email}
+        onChange={handleChange}
+        style={{ border: "1px solid #639F2F" }}
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={password}
+        onChange={handleChange}
+        style={{ border: "1px solid #639F2F" }}
+        required
+      />
+      <input
+        type="password"
+        name="confirmPassword"
+        placeholder="Confirm Password"
+        value={confirmPassword}
+        onChange={handleChange}
+        style={{ border: "1px solid #639F2F" }}
+        required
+      />
+    </>
+  );
+}
+
+// step 2
+function BasicDetails({
+  name,
+  age,
+  gender,
+  handleChange,
+}: WithChangeHandler<BasicFormValues>) {
+  return (
+    <>
+      <div className={styles.radioButton}>
+        <label>
+          <input
+            type="radio"
+            name="gender"
+            value="M"
+            checked={gender === "M"}
+            className={styles.inputGreen}
+            onChange={handleChange}
+          />
+          Male
+        </label>
+        <label style={{ marginLeft: "1rem" }}>
+          <input
+            type="radio"
+            name="gender"
+            value="F"
+            checked={gender === "F"}
+            className={styles.inputGreen}
+            onChange={handleChange}
+          />
+          Female
+        </label>
+      </div>
+
+      <input
+        type="text"
+        name="name"
+        placeholder="Name"
+        value={name}
+        onChange={handleChange}
+        style={{ border: "1px solid #639F2F" }}
+        required
+      />
+
+      <input
+        type="number"
+        name="age"
+        placeholder="Age"
+        value={age}
+        onChange={handleChange}
+        style={{ border: "1px solid #639F2F" }}
+        required
+      />
+    </>
+  );
+}
+
+// step 3
+function JobDetails({
+  specialty,
+  city,
+  phone,
+  language,
+  handleChange,
+}: WithChangeHandler<JobFormValues>) {
+  return (
+    <>
+      <input
+        type="text"
+        name="city"
+        placeholder="City"
+        value={city}
+        onChange={handleChange}
+        style={{ border: "1px solid #639F2F" }}
+        required
+      />
+      <input
+        type="text"
+        name="language"
+        placeholder="Language"
+        value={language}
+        onChange={handleChange}
+        style={{ border: "1px solid #639F2F" }}
+        required
+      />
+      <input
+        type="text"
+        name="specialty"
+        placeholder="Specialty"
+        value={specialty}
+        onChange={handleChange}
+        style={{ border: "1px solid #639F2F" }}
+        required
+      />
+      <input
+        type="tel"
+        name="phone"
+        placeholder="Phone Number"
+        value={phone}
+        onChange={handleChange}
+        style={{ border: "1px solid #639F2F" }}
+        required
+      />
+    </>
   );
 }
