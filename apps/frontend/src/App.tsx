@@ -5,11 +5,12 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Landing from "./components/Landing";
 import Login from "./components/Login";
 import SignupProfessional from "./components/SignupProfessional";
-import Expertlist from "./components/Expertlist";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import MedicalExpertCards, { experts } from "./components/MedicalExpertCards";
+import ExpertDetails from "./components/ExpertDetails";
 
 import "./App.css";
 
@@ -24,7 +25,8 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignupProfessional />} />
             </Route>
-            <Route path="/result" element={<Expertlist />} />
+            <Route path="/result" element={<MedicalExpertCards />} />
+            <Route path="expert/:id" element={<ExpertDetails experts={experts} />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

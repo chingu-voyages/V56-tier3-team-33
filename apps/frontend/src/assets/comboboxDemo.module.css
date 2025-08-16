@@ -1,0 +1,77 @@
+.button {
+  width: 200px;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
+
+.popoverContent {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px;
+  width: 200px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  z-index: 9999;
+}
+
+.input {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.list {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.item:hover {
+  background-color: #f2f2f2;
+}
+
+.check {
+  width: 16px;
+  height: 16px;
+  transition: opacity 0.2s ease;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.visible {
+  opacity: 1;
+}
+
+.noResults {
+  font-size: 14px;
+  color: #888;
+  padding: 8px;
+}

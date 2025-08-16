@@ -22,49 +22,30 @@ const Landing = () => {
             <p>professionals based on your needs,</p>
             <p>location, and preferences.</p>
           </div>
-          <div style={{ marginTop: "100px" }}>
+          <div className={styles.adjustmentMargin}>
             <Filterexpert />
           </div>
         </div>
 
         <div className={styles.containerImage}>
-          <img
-            src={image}
-            alt="This is a picture of doctors and patients"
-            className={styles.imageProject}
-          />
+          <img src={image} alt="Doctors and Patients" />
         </div>
       </div>
       <div className={styles.containerImageFilter}>
-        <div
-          className={styles.containerFilter}
-          style={{ display: "flex", justifyContent: "end" }}
-        >
-          <img src={image2} alt="Picture of on doctor smiling to us" />
+        <div className={`${styles.containerFilter} ${styles.containerImage2}`}>
+          <img src={image2} alt="Doctor smiling" />
         </div>
-        <div className={styles.containertext2}>
+        <div className={styles.expertIntroSection}>
           <p>Are you a medical professional?</p>
-          <p>share your expertise with new</p>
+          <p>Share your expertise with new</p>
           <p>clients today</p>
-          <div className={styles.containertext3}>
+          <div className={styles.expertDescription}>
             <p>Join thousands of medical professional</p>
             <p>who trusted Wecare to connect them with</p>
             <p>nearby patients in need of your expertise</p>
           </div>
-          <Link
-            to="/signup"
-            style={{
-              display: "inline-block",
-              padding: "26px 36px",
-              backgroundColor: "#8DB5D9",
-              color: "white",
-              textDecoration: "none",
-              borderRadius: "4px",
-              fontSize: "22px",
-              fontWeight: 1000,
-            }}
-          >
-            join as expert
+          <Link className={styles.signupStyle} to="/signup">
+            Join as an Expert
           </Link>
         </div>
       </div>
