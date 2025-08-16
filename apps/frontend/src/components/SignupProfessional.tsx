@@ -48,6 +48,7 @@ export default function SignupProfessional() {
   const authContext = useAuth();
   const navigate = useNavigate();
 
+  const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormValues>({ ...defaultFormValues });
@@ -76,6 +77,8 @@ export default function SignupProfessional() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    setLoading(true);
 
     // this is a temporary workaround to avoid time spent
     // on switching to year/month/day controls in the UI
@@ -120,6 +123,8 @@ export default function SignupProfessional() {
     } catch (err) {
       console.error(err);
       setError((err as Error).message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -181,7 +186,9 @@ export default function SignupProfessional() {
             )}
 
             {step === 3 ? (
-              <button type="submit">join us</button>
+              <button type="submit" disabled={isLoading}>
+                {isLoading ? "Loading..." : "Join us"}
+              </button>
             ) : (
               <button type="button" onClick={handleNextStep}>
                 next
