@@ -13,6 +13,7 @@ type ExpertRecord = {
 export async function getExperts(req: Request, res: Response) {
   const { specialty } = req.query;
 
+  const queryValues = [];
   let query = `SELECT
       users.id AS id,
       users.full_name AS name,
@@ -24,27 +25,20 @@ export async function getExperts(req: Request, res: Response) {
     JOIN experts ON users.id = experts.id
     JOIN specialties ON experts.specialty_id = specialties.id
     JOIN experts_languages ON experts.id = experts_languages.expert_id
-    JOIN languages ON experts_Languages.language_id = languages.id
-    GROUP BY users.id, users.full_name, gender, specialties.name, city
+    JOIN languages ON experts_languages.language_id = languages.id
   `;
 
   if (specialty) {
-    const [start, end] = query.split("GROUP BY");
-    const queryParts = [start, "WHERE specialties.name = $1", "GROUP BY" + end];
-
-    query = queryParts.join(" ");
+    queryValues.push(specialty);
+    query += " WHERE specialties.name = $1";
   }
 
-  try {
-    let data;
-    if (specialty) {
-      data = await makeDb().query<ExpertRecord>(query, [specialty]);
-    } else {
-      data = await makeDb().query<ExpertRecord>(query);
-    }
+  query +=
+    " GROUP BY users.id, users.full_name, gender, specialties.name, city";
 
-    const result = { experts: data.rows };
-    res.status(200).json(result);
+  try {
+    const data = await makeDb().query<ExpertRecord>(query, queryValues);
+    res.status(200).json({ experts: data.rows });
   } catch (error) {
     console.error("Something wrong!:", error);
   }
