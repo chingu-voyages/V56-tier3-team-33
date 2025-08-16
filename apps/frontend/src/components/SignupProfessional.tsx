@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as userService from "../services/user";
 import { useAuth } from "../contexts/AuthContext";
+import * as validator from "../lib/validator";
 
 import styles from "../assets/login.module.css";
 import type { ChangeEvent, FormEvent } from "react";
@@ -29,7 +30,7 @@ type JobFormValues = {
   language: string;
 };
 
-type FormValues = AccountFormValues & BasicFormValues & JobFormValues;
+export type FormValues = AccountFormValues & BasicFormValues & JobFormValues;
 
 const defaultFormValues = {
   email: "",
@@ -49,7 +50,7 @@ export default function SignupProfessional() {
   const navigate = useNavigate();
 
   const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<string[]>([]);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormValues>({ ...defaultFormValues });
 
@@ -62,16 +63,17 @@ export default function SignupProfessional() {
   }
 
   const handleNextStep = () => {
-    if (step === 1 && form.password !== form.confirmPassword) {
-      setError("Passwords do not match.");
+    const errors = validateCurrentStep();
+    if (errors.length) {
+      setErrors(errors);
       return;
     }
-    setError("");
+
+    setErrors([]);
     setStep((prev) => prev + 1);
   };
 
   const handlePrevStep = () => {
-    setError("");
     setStep((prev) => prev - 1);
   };
 
@@ -79,6 +81,15 @@ export default function SignupProfessional() {
     e.preventDefault();
 
     setLoading(true);
+
+    const errors = validateCurrentStep();
+    if (errors.length) {
+      setErrors(errors);
+      setLoading(false);
+      return;
+    }
+
+    setErrors([]);
 
     // this is a temporary workaround to avoid time spent
     // on switching to year/month/day controls in the UI
@@ -108,13 +119,13 @@ export default function SignupProfessional() {
       switch (data.type) {
         case "unknown_error":
           console.error(data.error, data.status);
-          setError(data.error);
+          setErrors([data.error]);
           break;
         case "validation_error":
-          setError(data.errors.map(({ message }) => message).join("\n"));
+          setErrors(data.errors.map(({ message }) => message));
           break;
         case "error":
-          setError(data.error);
+          setErrors([data.error]);
           break;
         case "success":
           authContext.login(data.token);
@@ -122,10 +133,60 @@ export default function SignupProfessional() {
       }
     } catch (err) {
       console.error(err);
-      setError((err as Error).message);
+      setErrors([(err as Error).message]);
     } finally {
       setLoading(false);
     }
+  }
+
+  // TODO: This way of doing it is ugly - refactor this...
+  function validateCurrentStep() {
+    const errors: string[] = [];
+
+    if (step == 1) {
+      if (!validator.isValidEmail(form.email)) {
+        errors.push("Email must be a valid address.");
+      }
+      if (!validator.isValidPassword(form.password)) {
+        errors.push(
+          "Password must be at least 8 characters of uppercase, lowercase, number, and special characters.",
+        );
+      }
+      if (form.password !== form.confirmPassword) {
+        errors.push("Passwords must match.");
+      }
+    }
+
+    if (step == 2) {
+      if (!validator.isValidName(form.name)) {
+        errors.push(
+          "Name must be between 6 and 50 characters, and at least two words separated by a single space or hyphen.",
+        );
+      }
+      if (!validator.isValidAge(form.age)) {
+        errors.push("You must be at least 18 years old.");
+      }
+      if (!validator.isValidGender(form.gender)) {
+        errors.push("Please select a valid gender.");
+      }
+    }
+
+    if (step == 3) {
+      if (!validator.isValidSpecialty(form.specialty)) {
+        errors.push("Please enter a valid specialty.");
+      }
+      if (!validator.isValidCity(form.city)) {
+        errors.push("Please enter a valid city.");
+      }
+      if (!validator.isValidPhone(form.phone)) {
+        errors.push("Please enter a valid phone number.");
+      }
+      if (!validator.isValidLanguage(form.language)) {
+        errors.push("Please enter a valid language.");
+      }
+    }
+
+    return errors;
   }
 
   return (
@@ -174,6 +235,16 @@ export default function SignupProfessional() {
             />
           )}
 
+          {errors.length > 0 && (
+            <div className={styles.errorMessages}>
+              {errors.map((error, index) => (
+                <p key={index} style={{ color: "red" }}>
+                  {error}
+                </p>
+              ))}
+            </div>
+          )}
+
           <div style={{ marginTop: "1rem" }}>
             {step > 1 && (
               <button
@@ -196,7 +267,7 @@ export default function SignupProfessional() {
             )}
           </div>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
         </form>
       </div>
     </div>
