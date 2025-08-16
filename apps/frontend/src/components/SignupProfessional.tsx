@@ -1,7 +1,10 @@
 import { useState } from "react";
-import type { ChangeEvent, FormEvent } from "react";
-import styles from "../assets/login.module.css";
 import { useNavigate } from "react-router-dom";
+import * as userService from "../services/user";
+import { useAuth } from "../contexts/AuthContext";
+
+import styles from "../assets/login.module.css";
+import type { ChangeEvent, FormEvent } from "react";
 
 type WithChangeHandler<T> = T & {
   handleChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
@@ -28,23 +31,26 @@ type JobFormValues = {
 
 type FormValues = AccountFormValues & BasicFormValues & JobFormValues;
 
+const defaultFormValues = {
+  email: "",
+  password: "",
+  confirmPassword: "",
+  name: "",
+  age: "",
+  gender: "",
+  specialty: "",
+  city: "",
+  phone: "",
+  language: "",
+};
+
 export default function SignupProfessional() {
+  const authContext = useAuth();
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
   const [step, setStep] = useState(1);
-  const [form, setForm] = useState<FormValues>({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    name: "",
-    age: "",
-    gender: "",
-    specialty: "",
-    city: "",
-    phone: "",
-    language: "",
-  });
+  const [form, setForm] = useState<FormValues>({ ...defaultFormValues });
 
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = e.target;
@@ -68,11 +74,54 @@ export default function SignupProfessional() {
     setStep((prev) => prev - 1);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("Submitting:", form);
-    // Envoi des données au backend ou autre logique
-  };
+
+    // this is a temporary workaround to avoid time spent
+    // on switching to year/month/day controls in the UI
+    // and multiselect on languages
+    //TODO: natively support this registerDetails format
+    const now = new Date();
+    const dateOfBirth = new Date(
+      now.getFullYear() - Number(form.age),
+      now.getMonth(),
+      now.getDate(),
+    );
+    const registerDetails = {
+      email: form.email,
+      password: form.password,
+      name: form.name,
+      dateOfBirth: dateOfBirth.toISOString(),
+      gender: form.gender,
+      specialty: form.specialty,
+      city: form.city,
+      phone: form.phone,
+      languages: [form.language],
+    };
+
+    try {
+      const data = await userService.register(registerDetails);
+
+      switch (data.type) {
+        case "unknown_error":
+          console.error(data.error, data.status);
+          setError(data.error);
+          break;
+        case "validation_error":
+          setError(data.errors.map(({ message }) => message).join("\n"));
+          break;
+        case "error":
+          setError(data.error);
+          break;
+        case "success":
+          authContext.login(data.token);
+          setForm({ ...defaultFormValues });
+      }
+    } catch (err) {
+      console.error(err);
+      setError((err as Error).message);
+    }
+  }
 
   return (
     <div className={styles.modaloverlay}>
