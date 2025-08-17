@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
-import styles from "../assets/medicalExpertCards.module.css";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import * as expertsService from "../services/experts";
 
-type MedicalExpert = {
+import styles from "../assets/medicalExpertCards.module.css";
+
+type Expert = {
   id: string;
   name: string;
   specialty: string;
   languages: string[];
-  photoUrl: string;
+  photoUrl?: string;
 };
 
-export const experts: MedicalExpert[] = [
+export const experts: Expert[] = [
   {
     id: "1",
     name: "Dr. Alice Dupont",
@@ -48,27 +50,23 @@ export const experts: MedicalExpert[] = [
   },
 ];
 
-const MedicalExpertCards: React.FC = () => {
+export default function MedicalExpertCards() {
   const navigate = useNavigate();
+  const [experts, setExperts] = useState<Expert[]>([]);
 
-  /*
-  const [experts, setExperts] = useState<MedicalExpert[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  useEffect( () => {
-    fetch(/api/experts) //this would be our api endpoint
-    .then((res) => {
-      if(!res.ok){
-        throw new Error("There is a problem in the network");
-      }
-      return res.json();
-    }).then((data: MedicalExpert[]) => {
-      setExperts(data);
-      setLoading(false);
-    })
-  } , [])*/
+  useEffect(() => {
+    expertsService
+      .getExperts()
+      .then((data) => {
+        if (data.type !== "success") {
+          console.error(data.error);
+        }
+        setExperts(data.experts);
+      })
+      .catch(console.error);
+  }, []);
 
-  const cardClick = (id: string) => {
+  const handleCardClick = (id: string) => {
     navigate(`/expert/${id}`);
   };
   return (
@@ -77,10 +75,10 @@ const MedicalExpertCards: React.FC = () => {
         <div
           key={expert.id}
           className={styles.card}
-          onClick={() => cardClick(expert.id)}
+          onClick={() => handleCardClick(expert.id)}
+          onKeyDown={(e) => e.key === "Enter" && handleCardClick(expert.id)}
           role="button"
           tabIndex={0}
-          onKeyDown={(e) => e.key === "Enter" && cardClick(expert.id)}
           style={{ cursor: "pointer" }}
         >
           <img
@@ -95,6 +93,4 @@ const MedicalExpertCards: React.FC = () => {
       ))}
     </div>
   );
-};
-
-export default MedicalExpertCards;
+}

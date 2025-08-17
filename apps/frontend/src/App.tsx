@@ -26,7 +26,10 @@ export default function App() {
               <Route path="/signup" element={<SignupProfessional />} />
             </Route>
             <Route path="/result" element={<MedicalExpertCards />} />
-            <Route path="expert/:id" element={<ExpertDetails experts={experts} />} />
+            <Route
+              path="expert/:id"
+              element={<ExpertDetails experts={experts} />}
+            />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
