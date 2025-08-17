@@ -25,9 +25,9 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignupProfessional />} />
             </Route>
-            <Route path="/result" element={<MedicalExpertCards />} />
+            <Route path="/experts" element={<MedicalExpertCards />} />
             <Route
-              path="expert/:id"
+              path="experts/:id"
               element={<ExpertDetails experts={experts} />}
             />
           </Routes>

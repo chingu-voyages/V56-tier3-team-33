@@ -80,7 +80,7 @@ export default function MedicalExpertCards() {
   }, []);
 
   const handleCardClick = (id: string) => {
-    navigate(`/expert/${id}`);
+    navigate(`/experts/${id}`);
   };
   return (
     <div className={styles.grid}>
