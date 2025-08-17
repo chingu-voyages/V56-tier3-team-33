@@ -8,7 +8,7 @@ import {
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Landing from "./components/Landing";
 import LoginPage from "./components/LoginPage";
-import SignupProfessional from "./components/SignupProfessional";
+import RegisterPage from "./components/RegisterPage";
 import MedicalExpertCards from "./components/MedicalExpertCards";
 import ExpertDetails from "./components/ExpertDetails";
 
@@ -23,7 +23,7 @@ export default function App() {
             <Route path="/" element={<Landing />} />
             <Route element={<GuestRoutes />}>
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupProfessional />} />
+              <Route path="/signup" element={<RegisterPage />} />
             </Route>
             <Route path="/experts" element={<MedicalExpertCards />} />
             <Route path="experts/:id" element={<ExpertDetails />} />

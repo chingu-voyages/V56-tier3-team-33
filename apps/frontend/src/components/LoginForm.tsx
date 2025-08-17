@@ -1,60 +1,111 @@
-import { cn } from "../lib/utils";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import * as userService from "../services/user";
+import { useAuth } from "../contexts/AuthContext";
+
 import { Button } from "./userInterface/button";
 import { Input } from "./userInterface/input";
 import { Label } from "./userInterface/label";
+import { cn } from "../lib/utils";
 import styles from "../assets/loginPage.module.css";
-import { useNavigate } from "react-router-dom";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"form">) {
+import type { ComponentProps, FormEvent } from "react";
+
+export function LoginForm({ className, ...props }: ComponentProps<"form">) {
+  const authContext = useAuth();
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+
+  async function handleLogin(e: FormEvent) {
+    e.preventDefault();
+    if (isLoading) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const data = await userService.login({ email, password });
+
+      switch (data.type) {
+        case "unknown_error":
+          console.error(data.error, data.status);
+          setError(data.error);
+          break;
+        case "validation_error":
+          setError(data.errors.map(({ message }) => message).join("\n"));
+          break;
+        case "error":
+          setError(data.error);
+          break;
+        case "success":
+          authContext.login(data.token);
+
+          setEmail("");
+          setPassword("");
+          navigate("/");
+      }
+    } catch (err) {
+      console.error(err);
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <form className={cn(styles.form, className)} {...props}>
+    <form
+      onSubmit={handleLogin}
+      className={cn(styles.form, className)}
+      {...props}
+    >
       <div className={styles.header}>
         <h1 className={styles.title}>Login to your account</h1>
-        <p className={styles.subtitle}>
-          Enter your email below to login to your account
-        </p>
+        {/* <p className={styles.subtitle}>Enter your credentials below</p> */}
       </div>
       <div className={styles.fieldGroup}>
-        <div className={styles.fieldGroup}>
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
-        </div>
-        <div className={styles.fieldGroup}>
-          <div className={styles.row}>
-            <Label htmlFor="password">Password</Label>
-          </div>
-          <Input id="password" type="password" required />
-        </div>
-        <Button
-          type="submit"
-          style={{ backgroundColor: "#8db5d9" }}
-          className={styles.buttonFullWidth}
-        >
-          Login
-        </Button>
-        <div className={styles.divider}>
-          <span>Or continue with</span>
-        </div>
-        <Button variant="outline" className={styles.buttonFullWidth}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path
-              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
-              fill="currentColor"
-            />
-          </svg>
-          Login with GitHub
-        </Button>
+        <Label>
+          Email
+          <Input
+            type="email"
+            placeholder="m@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </Label>
       </div>
+      <div className={styles.fieldGroup}>
+        <Label>
+          Password
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </Label>
+      </div>
+
+      <Button
+        type="submit"
+        style={{ backgroundColor: "#8db5d9" }}
+        disabled={isLoading}
+      >
+        Login
+      </Button>
       <div className={styles.footer}>
         Don&apos;t have an account?{" "}
-        <span className={styles.signupLink} onClick={() => navigate("/signup")}>
-          Sign up
-        </span>
+        <Link className={styles.signupLink} to="/signup">
+          Sign Up
+        </Link>
       </div>
+
+      {error && <p>{error}</p>}
     </form>
   );
 }
