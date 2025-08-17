@@ -1,4 +1,4 @@
-import { cn } from "../lib/utilis";
+import { cn } from "../lib/utils";
 import { Button } from "./userInterface/button";
 import { Input } from "./userInterface/input";
 import { Label } from "./userInterface/label";
