@@ -76,29 +76,35 @@ function ExpertsFilter({
 }) {
   return (
     <div>
-      <Combobox
-        items={specialties
-          .filter((specialty) =>
-            experts.some((expert) => expert.specialty === specialty),
-          )
-          .map((specialty) => ({ label: specialty, value: specialty }))}
-        selectedValue={specialtyFilter}
-        onChange={onSpecialtyChange}
-        placeholder="all"
-      />
+      <label>
+        specialty:
+        <Combobox
+          items={specialties
+            .filter((specialty) =>
+              experts.some((expert) => expert.specialty === specialty),
+            )
+            .map((specialty) => ({ label: specialty, value: specialty }))}
+          selectedValue={specialtyFilter}
+          onChange={onSpecialtyChange}
+          placeholder="all"
+        />
+      </label>
 
-      <Combobox
-        items={cities
-          .filter(({ city }) =>
-            experts.some(
-              (expert) => expert.city.toLowerCase() === city.toLowerCase(),
-            ),
-          )
-          .map(({ city }) => ({ label: city, value: city }))}
-        selectedValue={cityFilter}
-        onChange={onCityChange}
-        placeholder="all"
-      />
+      <label>
+        city:
+        <Combobox
+          items={cities
+            .filter(({ city }) =>
+              experts.some(
+                (expert) => expert.city.toLowerCase() === city.toLowerCase(),
+              ),
+            )
+            .map(({ city }) => ({ label: city, value: city }))}
+          selectedValue={cityFilter}
+          onChange={onCityChange}
+          placeholder="all"
+        />
+      </label>
     </div>
   );
 }
