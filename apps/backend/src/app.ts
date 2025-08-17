@@ -1,5 +1,4 @@
 import express from "express";
-import exampleEntityRouter from "./example-entity/index.js";
 import userRouter from "./user/index.js";
 import expertsRouter from "./experts/index.js";
 
@@ -20,7 +19,6 @@ app.use(function setupCORS(_, res, next) {
 });
 
 // adding different routers here
-app.use("/api/v1", exampleEntityRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/experts", expertsRouter);
 
