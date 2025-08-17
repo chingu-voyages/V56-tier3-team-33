@@ -11,11 +11,45 @@ type MedicalExpert = {
   // Add more fields
 };
 
-interface ExpertDetailsProps {
-  experts: MedicalExpert[];
-}
+const experts: MedicalExpert[] = [
+  {
+    id: "1",
+    name: "Dr. Alice Dupont",
+    specialty: "Cardiology",
+    languages: ["French", "English"],
+    photoUrl: "https://randomuser.me/api/portraits/women/44.jpg",
+  },
+  {
+    id: "2",
+    name: "Dr. Marc Leclerc",
+    specialty: "Neurology",
+    languages: ["French"],
+    photoUrl: "https://randomuser.me/api/portraits/men/45.jpg",
+  },
+  {
+    id: "3",
+    name: "Dr. Sarah Müller",
+    specialty: "Dermatology",
+    languages: ["German", "English"],
+    photoUrl: "https://randomuser.me/api/portraits/women/46.jpg",
+  },
+  {
+    id: "4",
+    name: "Dr. John Zhang",
+    specialty: "Psychastry",
+    languages: ["Chinese", "French"],
+    photoUrl: "https://randomuser.me/api/portraits/men/47.jpg",
+  },
+  {
+    id: "5",
+    name: "Dr. Anna Rossi",
+    specialty: "Generalist",
+    languages: ["Italian", "English"],
+    photoUrl: "https://randomuser.me/api/portraits/women/48.jpg",
+  },
+];
 
-const ExpertDetails: React.FC<ExpertDetailsProps> = ({ experts }) => {
+const ExpertDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 

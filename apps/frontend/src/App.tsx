@@ -9,7 +9,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Landing from "./components/Landing";
 import Login from "./components/Login";
 import SignupProfessional from "./components/SignupProfessional";
-import MedicalExpertCards, { experts } from "./components/MedicalExpertCards";
+import MedicalExpertCards from "./components/MedicalExpertCards";
 import ExpertDetails from "./components/ExpertDetails";
 
 import "./App.css";
@@ -26,10 +26,7 @@ export default function App() {
               <Route path="/signup" element={<SignupProfessional />} />
             </Route>
             <Route path="/experts" element={<MedicalExpertCards />} />
-            <Route
-              path="experts/:id"
-              element={<ExpertDetails experts={experts} />}
-            />
+            <Route path="experts/:id" element={<ExpertDetails />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
