@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as expertsService from "../services/experts";
 
 import styles from "../assets/medicalExpertCards.module.css";
+import supportedLanguages from "../data/languages.json";
 
 type Expert = {
   id: string;
@@ -101,7 +102,14 @@ export default function MedicalExpertCards() {
           <h3 className={styles.name}>{expert.name}</h3>
           <p className={styles.specialty}>{expert.specialty}</p>
           <p className={styles.specialty}>{expert.city}</p>
-          <p className={styles.languages}>{expert.languages.join(", ")}</p>
+          <p className={styles.languages}>
+            {expert.languages
+              .map(
+                (code) =>
+                  supportedLanguages[code as keyof typeof supportedLanguages],
+              )
+              .join(", ")}
+          </p>
         </div>
       ))}
     </div>
