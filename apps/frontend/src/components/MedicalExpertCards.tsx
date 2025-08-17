@@ -9,7 +9,7 @@ type Expert = {
   name: string;
   specialty: string;
   languages: string[];
-  photoUrl?: string;
+  photoUrl: string;
 };
 
 export const experts: Expert[] = [

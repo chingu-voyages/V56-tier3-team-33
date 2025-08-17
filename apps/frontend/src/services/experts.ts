@@ -4,6 +4,8 @@ if (!import.meta.env.VITE_BACKEND_URL) {
 
 const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/v1/experts`;
 
+const PORTRAITS_BASE_API_URL = "https://randomuser.me/api/portraits/";
+
 export async function getExperts() {
   const options = {
     method: "GET",
@@ -30,5 +32,13 @@ export async function getExperts() {
     }
   }
 
-  return { type: "success", experts: data.experts };
+  // TODO: remove this when you either implement or scrap portraits
+  const experts = data.experts.map((expert: { gender: string }) => {
+    let photoUrl = PORTRAITS_BASE_API_URL;
+    photoUrl += expert.gender === "M" ? "/men" : "/women";
+    photoUrl += `/${Math.floor(Math.random() * 100)}.jpg`;
+    return { ...expert, photoUrl };
+  });
+
+  return { type: "success", experts };
 }
