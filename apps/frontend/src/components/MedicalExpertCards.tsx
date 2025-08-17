@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as expertsService from "../services/experts";
 import { Combobox } from "./Combobox";
@@ -19,9 +19,7 @@ type Expert = {
 };
 
 export default function MedicalExpertCards() {
-  const navigate = useNavigate();
   const [experts, setExperts] = useState<Expert[]>([]);
-  const [filteredExperts, setFilteredExperts] = useState<Expert[]>([]);
   const [specialtyFilter, setSpecialtyFilter] = useState("");
   const [cityFilter, setCityFilter] = useState("");
 
@@ -37,29 +35,47 @@ export default function MedicalExpertCards() {
       .catch(console.error);
   }, []);
 
-  useEffect(() => {
-    const filteredList = experts.filter((expert) => {
-      let matchesSpecialty = true;
-      if (specialtyFilter) {
-        matchesSpecialty = expert.specialty == specialtyFilter;
-      }
-
-      let matchesCity = true;
-      if (cityFilter) {
-        matchesCity = expert.city == cityFilter;
-      }
-
+  const filteredList = useMemo(() => {
+    return experts.filter((expert) => {
+      const matchesSpecialty = specialtyFilter
+        ? expert.specialty == specialtyFilter
+        : true;
+      const matchesCity = cityFilter ? expert.city == cityFilter : true;
       return matchesSpecialty && matchesCity;
     });
-
-    setFilteredExperts(filteredList);
   }, [experts, specialtyFilter, cityFilter]);
 
-  const handleCardClick = (id: string) => {
-    navigate(`/experts/${id}`);
-  };
   return (
-    <>
+    <div>
+      <ExpertsFilter
+        experts={experts}
+        specialtyFilter={specialtyFilter}
+        cityFilter={cityFilter}
+        onSpecialtyChange={(e) =>
+          setSpecialtyFilter(e === specialtyFilter ? "" : e)
+        }
+        onCityChange={(e) => setCityFilter(e === cityFilter ? "" : e)}
+      />
+      <ExpertsList experts={filteredList} />
+    </div>
+  );
+}
+
+function ExpertsFilter({
+  experts,
+  specialtyFilter,
+  cityFilter,
+  onSpecialtyChange,
+  onCityChange,
+}: {
+  specialtyFilter: string;
+  cityFilter: string;
+  experts: Expert[];
+  onSpecialtyChange: (specialty: string) => void;
+  onCityChange: (city: string) => void;
+}) {
+  return (
+    <div>
       <Combobox
         items={specialties
           .filter((specialty) =>
@@ -67,9 +83,7 @@ export default function MedicalExpertCards() {
           )
           .map((specialty) => ({ label: specialty, value: specialty }))}
         selectedValue={specialtyFilter}
-        onChange={(e) => {
-          setSpecialtyFilter(e === specialtyFilter ? "" : e);
-        }}
+        onChange={onSpecialtyChange}
         placeholder="all"
       />
 
@@ -82,41 +96,54 @@ export default function MedicalExpertCards() {
           )
           .map(({ city }) => ({ label: city, value: city }))}
         selectedValue={cityFilter}
-        onChange={(e) => {
-          setCityFilter(e === cityFilter ? "" : e);
-        }}
+        onChange={onCityChange}
         placeholder="all"
       />
-      <div className={styles.grid}>
-        {filteredExperts.map((expert) => (
-          <div
-            key={expert.id}
-            className={styles.card}
-            onClick={() => handleCardClick(expert.id)}
-            onKeyDown={(e) => e.key === "Enter" && handleCardClick(expert.id)}
-            role="button"
-            tabIndex={0}
-            style={{ cursor: "pointer" }}
-          >
-            <img
-              src={expert.photoUrl}
-              alt={expert.name}
-              className={styles.photo}
-            />
-            <h3 className={styles.name}>{expert.name}</h3>
-            <p className={styles.specialty}>{expert.specialty}</p>
-            <p className={styles.specialty}>{expert.city}</p>
-            <p className={styles.languages}>
-              {expert.languages
-                .map(
-                  (code) =>
-                    supportedLanguages[code as keyof typeof supportedLanguages],
-                )
-                .join(", ")}
-            </p>
-          </div>
-        ))}
-      </div>
-    </>
+    </div>
+  );
+}
+
+function ExpertsList({ experts }: { experts: Expert[] }) {
+  return (
+    <div className={styles.grid}>
+      {experts.length > 0 ? (
+        experts.map((expert) => <ExpertCard key={expert.id} expert={expert} />)
+      ) : (
+        <p>No expert found.</p>
+      )}
+    </div>
+  );
+}
+
+function ExpertCard({ expert }: { expert: Expert }) {
+  const navigate = useNavigate();
+
+  function handleExpertClick(id: string) {
+    navigate(`/experts/${id}`);
+  }
+
+  return (
+    <div
+      key={expert.id}
+      className={styles.card}
+      onClick={() => handleExpertClick(expert.id)}
+      onKeyDown={(e) => e.key === "Enter" && handleExpertClick(expert.id)}
+      role="button"
+      tabIndex={0}
+      style={{ cursor: "pointer" }}
+    >
+      <img src={expert.photoUrl} alt={expert.name} className={styles.photo} />
+      <h3 className={styles.name}>{expert.name}</h3>
+      <p className={styles.specialty}>{expert.specialty}</p>
+      <p className={styles.specialty}>{expert.city}</p>
+      <p className={styles.languages}>
+        {expert.languages
+          .map(
+            (code) =>
+              supportedLanguages[code as keyof typeof supportedLanguages],
+          )
+          .join(", ")}
+      </p>
+    </div>
   );
 }
