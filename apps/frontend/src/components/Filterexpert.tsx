@@ -31,7 +31,7 @@ export default function Filterexpert() {
 
   const submitButtonFunction = () => {
     navigate(
-      `/result?city=${encodeURIComponent(city)}&specialite=${encodeURIComponent(speciality)}`,
+      `/experts?city=${encodeURIComponent(city)}&specialty=${encodeURIComponent(speciality)}`,
     );
   };
 

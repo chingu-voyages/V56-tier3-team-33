@@ -1,100 +1,155 @@
-import React, { useEffect, useState } from "react";
-import styles from "../assets/medicalExpertCards.module.css";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import * as expertsService from "../services/experts";
+import { Combobox } from "./Combobox";
 
-type MedicalExpert = {
+import styles from "../assets/medicalExpertCards.module.css";
+import specialties from "../data/specialties.json";
+import cities from "../data/cities.json";
+import supportedLanguages from "../data/languages.json";
+
+type Expert = {
   id: string;
   name: string;
+  gender: "M" | "F";
   specialty: string;
+  city: string;
   languages: string[];
   photoUrl: string;
 };
 
-export const experts: MedicalExpert[] = [
-  {
-    id: "1",
-    name: "Dr. Alice Dupont",
-    specialty: "Cardiology",
-    languages: ["French", "English"],
-    photoUrl: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    id: "2",
-    name: "Dr. Marc Leclerc",
-    specialty: "Neurology",
-    languages: ["French"],
-    photoUrl: "https://randomuser.me/api/portraits/men/45.jpg",
-  },
-  {
-    id: "3",
-    name: "Dr. Sarah Müller",
-    specialty: "Dermatology",
-    languages: ["German", "English"],
-    photoUrl: "https://randomuser.me/api/portraits/women/46.jpg",
-  },
-  {
-    id: "4",
-    name: "Dr. John Zhang",
-    specialty: "Psychastry",
-    languages: ["Chinese", "French"],
-    photoUrl: "https://randomuser.me/api/portraits/men/47.jpg",
-  },
-  {
-    id: "5",
-    name: "Dr. Anna Rossi",
-    specialty: "Generalist",
-    languages: ["Italian", "English"],
-    photoUrl: "https://randomuser.me/api/portraits/women/48.jpg",
-  },
-];
+export default function MedicalExpertCards() {
+  const [experts, setExperts] = useState<Expert[]>([]);
+  const [specialtyFilter, setSpecialtyFilter] = useState("");
+  const [cityFilter, setCityFilter] = useState("");
 
-const MedicalExpertCards: React.FC = () => {
-  const navigate = useNavigate();
+  useEffect(() => {
+    expertsService
+      .getExperts()
+      .then((data) => {
+        if (data.type !== "success") {
+          console.error(data.error);
+        }
+        setExperts(data.experts);
+      })
+      .catch(console.error);
+  }, []);
 
-  /*
-  const [experts, setExperts] = useState<MedicalExpert[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  useEffect( () => {
-    fetch(/api/experts) //this would be our api endpoint
-    .then((res) => {
-      if(!res.ok){
-        throw new Error("There is a problem in the network");
-      }
-      return res.json();
-    }).then((data: MedicalExpert[]) => {
-      setExperts(data);
-      setLoading(false);
-    })
-  } , [])*/
+  const filteredList = useMemo(() => {
+    return experts.filter((expert) => {
+      const matchesSpecialty = specialtyFilter
+        ? expert.specialty == specialtyFilter
+        : true;
+      const matchesCity = cityFilter ? expert.city == cityFilter : true;
+      return matchesSpecialty && matchesCity;
+    });
+  }, [experts, specialtyFilter, cityFilter]);
 
-  const cardClick = (id: string) => {
-    navigate(`/expert/${id}`);
-  };
   return (
-    <div className={styles.grid}>
-      {experts.map((expert) => (
-        <div
-          key={expert.id}
-          className={styles.card}
-          onClick={() => cardClick(expert.id)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => e.key === "Enter" && cardClick(expert.id)}
-          style={{ cursor: "pointer" }}
-        >
-          <img
-            src={expert.photoUrl}
-            alt={expert.name}
-            className={styles.photo}
-          />
-          <h3 className={styles.name}>{expert.name}</h3>
-          <p className={styles.specialty}>{expert.specialty}</p>
-          <p className={styles.languages}>{expert.languages.join(", ")}</p>
-        </div>
-      ))}
+    <div>
+      <ExpertsFilter
+        experts={experts}
+        specialtyFilter={specialtyFilter}
+        cityFilter={cityFilter}
+        onSpecialtyChange={(e) =>
+          setSpecialtyFilter(e === specialtyFilter ? "" : e)
+        }
+        onCityChange={(e) => setCityFilter(e === cityFilter ? "" : e)}
+      />
+      <ExpertsList experts={filteredList} />
     </div>
   );
-};
+}
 
-export default MedicalExpertCards;
+function ExpertsFilter({
+  experts,
+  specialtyFilter,
+  cityFilter,
+  onSpecialtyChange,
+  onCityChange,
+}: {
+  specialtyFilter: string;
+  cityFilter: string;
+  experts: Expert[];
+  onSpecialtyChange: (specialty: string) => void;
+  onCityChange: (city: string) => void;
+}) {
+  return (
+    <div>
+      <label>
+        specialty:
+        <Combobox
+          items={specialties
+            .filter((specialty) =>
+              experts.some((expert) => expert.specialty === specialty),
+            )
+            .map((specialty) => ({ label: specialty, value: specialty }))}
+          selectedValue={specialtyFilter}
+          onChange={onSpecialtyChange}
+          placeholder="all"
+        />
+      </label>
+
+      <label>
+        city:
+        <Combobox
+          items={cities
+            .filter(({ city }) =>
+              experts.some(
+                (expert) => expert.city.toLowerCase() === city.toLowerCase(),
+              ),
+            )
+            .map(({ city }) => ({ label: city, value: city }))}
+          selectedValue={cityFilter}
+          onChange={onCityChange}
+          placeholder="all"
+        />
+      </label>
+    </div>
+  );
+}
+
+function ExpertsList({ experts }: { experts: Expert[] }) {
+  return (
+    <div className={styles.grid}>
+      {experts.length > 0 ? (
+        experts.map((expert) => <ExpertCard key={expert.id} expert={expert} />)
+      ) : (
+        <p>No expert found.</p>
+      )}
+    </div>
+  );
+}
+
+function ExpertCard({ expert }: { expert: Expert }) {
+  const navigate = useNavigate();
+
+  function handleExpertClick(id: string) {
+    navigate(`/experts/${id}`);
+  }
+
+  return (
+    <div
+      key={expert.id}
+      className={styles.card}
+      onClick={() => handleExpertClick(expert.id)}
+      onKeyDown={(e) => e.key === "Enter" && handleExpertClick(expert.id)}
+      role="button"
+      tabIndex={0}
+      style={{ cursor: "pointer" }}
+    >
+      <img src={expert.photoUrl} alt={expert.name} className={styles.photo} />
+      <h3 className={styles.name}>{expert.name}</h3>
+      <p className={styles.specialty}>{expert.specialty}</p>
+      <p className={styles.specialty}>{expert.city}</p>
+      <p className={styles.languages}>
+        {expert.languages
+          .map(
+            (code) =>
+              supportedLanguages[code as keyof typeof supportedLanguages],
+          )
+          .join(", ")}
+      </p>
+    </div>
+  );
+}

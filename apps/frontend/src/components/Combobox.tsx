@@ -1,10 +1,7 @@
-// components/Combobox.tsx
-"use client";
-
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import { ChevronsUpDown, Check } from "lucide-react";
-import { cn } from "../lib/utilis";
+import { cn } from "../lib/utils";
 import styles from "../assets/comboboxDemo.module.css";
 
 type ComboboxItem = {
