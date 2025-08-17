@@ -84,9 +84,10 @@ export function isValidPhone(phone: string) {
   return phoneRegex.test(phone);
 }
 
-export function isValidLanguage(name: string) {
-  name = name.trim();
-  return Object.values(languages).includes(name);
+export function isValidLanguage(code: string) {
+  code = code.trim();
+  // return Object.values(languages).includes(name);
+  return Boolean(languages[code as keyof typeof languages]);
 }
 
 // TODO: export this instead of age when switching to DOB in register
