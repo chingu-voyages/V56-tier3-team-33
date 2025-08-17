@@ -35,28 +35,27 @@ export function isValidAge(age: string) {
 }
 
 // TODO: export this instead of isValidAge when switching to DOB
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function isValidDateOfBirth(dateOfBirth: string) {
-  const isoFormat = /^\d{4}-\d{2}-\d{2}/;
-  if (!isoFormat.test(dateOfBirth)) {
-    return false;
-  }
+// function isValidDateOfBirth(dateOfBirth: string) {
+//   const isoFormat = /^\d{4}-\d{2}-\d{2}/;
+//   if (!isoFormat.test(dateOfBirth)) {
+//     return false;
+//   }
 
-  const dob = new Date(dateOfBirth);
+//   const dob = new Date(dateOfBirth);
 
-  if (isNaN(dob.valueOf())) {
-    return false;
-  }
+//   if (isNaN(dob.valueOf())) {
+//     return false;
+//   }
 
-  const now = new Date();
-  const minDateOfBirth = new Date(
-    now.getFullYear() - 18,
-    now.getMonth(),
-    now.getDate(),
-  );
+//   const now = new Date();
+//   const minDateOfBirth = new Date(
+//     now.getFullYear() - 18,
+//     now.getMonth(),
+//     now.getDate(),
+//   );
 
-  return dob <= minDateOfBirth;
-}
+//   return dob <= minDateOfBirth;
+// }
 
 export function isValidGender(gender: string) {
   gender = gender.trim().toUpperCase();
@@ -91,8 +90,7 @@ export function isValidLanguage(code: string) {
 }
 
 // TODO: export this instead of age when switching to DOB in register
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function areValidLanguages(langCodes: Array<string>) {
-  // ISO 639-1 standard for language codes
-  return langCodes.every((code) => Object.hasOwn(languages, code));
-}
+// function areValidLanguages(langCodes: Array<string>) {
+//   // ISO 639-1 standard for language codes
+//   return langCodes.every((code) => Object.hasOwn(languages, code));
+// }
