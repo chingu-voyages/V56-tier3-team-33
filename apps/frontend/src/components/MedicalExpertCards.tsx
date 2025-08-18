@@ -93,6 +93,7 @@ function ExpertsFilter({
     )
     .map((specialty) => ({ label: specialty, value: specialty }));
   specialtiesData.sort((a, b) => (a.label < b.label ? -1 : 1));
+  specialtiesData.unshift({ label: "all", value: "" });
 
   const citiesData = cities
     .filter(({ city }) =>
@@ -102,6 +103,7 @@ function ExpertsFilter({
     )
     .map(({ city }) => ({ label: city, value: city }));
   citiesData.sort((a, b) => (a.label < b.label ? -1 : 1));
+  citiesData.unshift({ label: "all", value: "" });
 
   return (
     <>
