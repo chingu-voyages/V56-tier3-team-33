@@ -87,6 +87,22 @@ function ExpertsFilter({
   onSpecialtyChange: (specialty: string) => void;
   onCityChange: (city: string) => void;
 }) {
+  const specialtiesData = specialties
+    .filter((specialty) =>
+      experts.some((expert) => expert.specialty === specialty),
+    )
+    .map((specialty) => ({ label: specialty, value: specialty }));
+  specialtiesData.sort((a, b) => (a.label < b.label ? -1 : 1));
+
+  const citiesData = cities
+    .filter(({ city }) =>
+      experts.some(
+        (expert) => expert.city.toLowerCase() === city.toLowerCase(),
+      ),
+    )
+    .map(({ city }) => ({ label: city, value: city }));
+  citiesData.sort((a, b) => (a.label < b.label ? -1 : 1));
+
   return (
     <>
       <Nav />
@@ -94,11 +110,7 @@ function ExpertsFilter({
         <Label style={{ margin: "10px" }}>
           specialty:
           <Combobox
-            items={specialties
-              .filter((specialty) =>
-                experts.some((expert) => expert.specialty === specialty),
-              )
-              .map((specialty) => ({ label: specialty, value: specialty }))}
+            items={specialtiesData}
             selectedValue={specialtyFilter}
             onChange={onSpecialtyChange}
             placeholder="all"
@@ -108,13 +120,7 @@ function ExpertsFilter({
         <Label style={{ margin: "10px" }}>
           city:
           <Combobox
-            items={cities
-              .filter(({ city }) =>
-                experts.some(
-                  (expert) => expert.city.toLowerCase() === city.toLowerCase(),
-                ),
-              )
-              .map(({ city }) => ({ label: city, value: city }))}
+            items={citiesData}
             selectedValue={cityFilter}
             onChange={onCityChange}
             placeholder="all"

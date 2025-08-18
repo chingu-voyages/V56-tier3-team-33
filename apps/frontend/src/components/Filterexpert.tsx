@@ -16,14 +16,21 @@ export default function Filterexpert() {
     navigate("/experts", { state: { city, specialty } });
   };
 
-  const buttonDisable = !city || !specialty;
+  const citiesData = cities.map(({ city }) => ({ label: city, value: city }));
+  citiesData.sort((a, b) => (a.label < b.label ? -1 : 1));
+
+  const specialtiesData = specialties.map((specialty) => ({
+    label: specialty,
+    value: specialty,
+  }));
+  specialtiesData.sort((a, b) => (a.label < b.label ? -1 : 1));
 
   return (
     <div style={{ paddingLeft: "70px" }}>
       <div style={{ display: "flex", gap: "15px" }}>
         <Label className={styles.inputLabel}>
           <Combobox
-            items={cities.map(({ city }) => ({ label: city, value: city }))}
+            items={citiesData}
             selectedValue={city}
             onChange={setCity}
             placeholder="Choose your city"
@@ -32,10 +39,7 @@ export default function Filterexpert() {
 
         <Label className={styles.inputLabel}>
           <Combobox
-            items={specialties.map((specialty) => ({
-              label: specialty,
-              value: specialty,
-            }))}
+            items={specialtiesData}
             selectedValue={specialty}
             onChange={setSpecialty}
             placeholder="Choose your speciality"
@@ -45,7 +49,6 @@ export default function Filterexpert() {
 
       <button
         onClick={submitButtonFunction}
-        disabled={buttonDisable}
         style={{
           marginTop: "15px",
           width: "415px",
