@@ -27,16 +27,14 @@ const specialities: ComboboxItem[] = [
 
 export default function Filterexpert() {
   const [city, setCity] = useState<string>("");
-  const [speciality, setSpeciality] = useState<string>("");
+  const [specialty, setSpecialty] = useState<string>("");
   const navigate = useNavigate();
 
   const submitButtonFunction = () => {
-    navigate(
-      `/experts?city=${encodeURIComponent(city)}&specialty=${encodeURIComponent(speciality)}`,
-    );
+    navigate("/experts", { state: { city, specialty } });
   };
 
-  const buttonDisable = !city || !speciality;
+  const buttonDisable = !city || !specialty;
 
   return (
     <div style={{ paddingLeft: "70px" }}>
@@ -53,8 +51,8 @@ export default function Filterexpert() {
         <Label className={styles.inputLabel}>
           <Combobox
             items={specialities}
-            selectedValue={speciality}
-            onChange={setSpeciality}
+            selectedValue={specialty}
+            onChange={setSpecialty}
             placeholder="Choose your speciality"
           />
         </Label>

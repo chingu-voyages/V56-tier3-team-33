@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as expertsService from "../services/experts";
 import { Combobox } from "./Combobox";
 import { Label } from "../components/userInterface/label";
@@ -22,9 +22,19 @@ type Expert = {
 };
 
 export default function MedicalExpertCards() {
+  const location = useLocation();
+
   const [experts, setExperts] = useState<Expert[]>([]);
   const [specialtyFilter, setSpecialtyFilter] = useState("");
   const [cityFilter, setCityFilter] = useState("");
+
+  useEffect(() => {
+    if (location.state) {
+      setSpecialtyFilter(location.state.specialty ?? "");
+      setCityFilter(location.state.city ?? "");
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
 
   useEffect(() => {
     expertsService
