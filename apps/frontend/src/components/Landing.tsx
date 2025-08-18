@@ -4,8 +4,10 @@ import image from "../assets/hero 1.png";
 import Filterexpert from "./Filterexpert";
 import image2 from "../assets/Doctor Invite Photo 1.png";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const Landing = () => {
+  const authContext = useAuth();
   return (
     <div className={styles.containerLanding}>
       <>
@@ -31,24 +33,30 @@ const Landing = () => {
           <img src={image} alt="Doctors and Patients" />
         </div>
       </div>
-      <div className={styles.containerImageFilter}>
-        <div className={`${styles.containerFilter} ${styles.containerImage2}`}>
-          <img src={image2} alt="Doctor smiling" />
-        </div>
-        <div className={styles.expertIntroSection}>
-          <p>Are you a medical professional?</p>
-          <p>Share your expertise with new</p>
-          <p>clients today</p>
-          <div className={styles.expertDescription}>
-            <p>Join thousands of medical professional</p>
-            <p>who trusted Wecare to connect them with</p>
-            <p>nearby patients in need of your expertise</p>
+      {!authContext.user ? (
+        <div className={styles.containerImageFilter}>
+          <div
+            className={`${styles.containerFilter} ${styles.containerImage2}`}
+          >
+            <img src={image2} alt="Doctor smiling" />
           </div>
-          <Link className={styles.signupStyle} to="/signup">
-            Join as an Expert
-          </Link>
+          <div className={styles.expertIntroSection}>
+            <p>Are you a medical professional?</p>
+            <p>Share your expertise with new</p>
+            <p>clients today</p>
+            <div className={styles.expertDescription}>
+              <p>Join thousands of medical professional</p>
+              <p>who trusted Wecare to connect them with</p>
+              <p>nearby patients in need of your expertise</p>
+            </div>
+            <Link className={styles.signupStyle} to="/signup">
+              Join as an Expert
+            </Link>
+          </div>
         </div>
-      </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
