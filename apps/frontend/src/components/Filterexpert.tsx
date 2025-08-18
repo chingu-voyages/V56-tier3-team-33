@@ -1,29 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import styles from "../assets/landing.module.css";
 import { Combobox } from "./Combobox";
 import { Label } from "../components/userInterface/label";
+import specialties from "../data/specialties.json";
+import cities from "../data/cities.json";
 
-type ComboboxItem = {
-  value: string;
-  label: string;
-};
-
-// 🔁 Données statiques pour les villes
-const staticCities: ComboboxItem[] = [
-  { value: "Paris", label: "Paris" },
-  { value: "London", label: "London" },
-  { value: "Berlin", label: "Berlin" },
-  { value: "Madrid", label: "Madrid" },
-];
-
-const specialities: ComboboxItem[] = [
-  { value: "Cardiology", label: "Cardiology" },
-  { value: "Dermatology", label: "Dermatology" },
-  { value: "Generalist", label: "Generalist" },
-  { value: "Neurology", label: "Neurology" },
-  { value: "Psychiatry", label: "Psychiatry" },
-];
+import styles from "../assets/landing.module.css";
 
 export default function Filterexpert() {
   const [city, setCity] = useState<string>("");
@@ -41,7 +23,7 @@ export default function Filterexpert() {
       <div style={{ display: "flex", gap: "15px" }}>
         <Label className={styles.inputLabel}>
           <Combobox
-            items={staticCities}
+            items={cities.map(({ city }) => ({ label: city, value: city }))}
             selectedValue={city}
             onChange={setCity}
             placeholder="Choose your city"
@@ -50,7 +32,10 @@ export default function Filterexpert() {
 
         <Label className={styles.inputLabel}>
           <Combobox
-            items={specialities}
+            items={specialties.map((specialty) => ({
+              label: specialty,
+              value: specialty,
+            }))}
             selectedValue={specialty}
             onChange={setSpecialty}
             placeholder="Choose your speciality"
