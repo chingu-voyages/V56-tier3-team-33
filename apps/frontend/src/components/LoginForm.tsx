@@ -105,7 +105,11 @@ export function LoginForm({ className, ...props }: ComponentProps<"form">) {
         </Link>
       </div>
 
-      {error && <p>{error}</p>}
+      {error && (
+        <div style={{ color: "red" }}>
+          <p>{error}</p>
+        </div>
+      )}
     </form>
   );
 }

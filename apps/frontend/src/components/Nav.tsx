@@ -16,13 +16,16 @@ export default function Nav() {
           </div>
 
           {authContext.user ? (
-            <button
-              onClick={() => {
-                authContext.logout();
-              }}
-            >
-              Log out
-            </button>
+            <div className={styles.loginDetail}>
+              <button
+                className={styles.loginDetail2}
+                onClick={() => {
+                  authContext.logout();
+                }}
+              >
+                Log out
+              </button>
+            </div>
           ) : (
             <Link className={styles.loginDetail} to="/login">
               <div className={styles.loginDetail2}>Login</div>
