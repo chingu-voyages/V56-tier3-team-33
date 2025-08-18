@@ -64,6 +64,7 @@ function buildExpertsQuery(whereClause?: string) {
       gender,
       specialties.name AS specialty,
       city,
+      phone,
       array_agg(DISTINCT languages.code) AS languages
     FROM experts
     JOIN users ON experts.id = users.id
