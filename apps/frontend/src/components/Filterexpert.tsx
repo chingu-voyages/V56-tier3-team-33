@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styles from "../assets/landing.module.css";
 import { Combobox } from "./Combobox";
+import { Label } from "../components/userInterface/label";
 
 type ComboboxItem = {
   value: string;
@@ -39,30 +40,36 @@ export default function Filterexpert() {
 
   return (
     <div style={{ paddingLeft: "70px" }}>
-      <div style={{ display: "flex" }}>
-        <label className={styles.inputLabel}>
+      <div style={{ display: "flex", gap: "15px" }}>
+        <Label className={styles.inputLabel}>
           <Combobox
             items={staticCities}
             selectedValue={city}
             onChange={setCity}
             placeholder="Choose your city"
           />
-        </label>
+        </Label>
 
-        <label className={styles.inputLabel}>
+        <Label className={styles.inputLabel}>
           <Combobox
             items={specialities}
             selectedValue={speciality}
             onChange={setSpeciality}
             placeholder="Choose your speciality"
           />
-        </label>
+        </Label>
       </div>
 
       <button
         onClick={submitButtonFunction}
         disabled={buttonDisable}
-        style={{ width: "400px", color: "white", fontSize: "20px" }}
+        style={{
+          marginTop: "15px",
+          width: "415px",
+          color: "white",
+          fontSize: "20px",
+          backgroundColor: "#8db5d9",
+        }}
       >
         Search
       </button>

@@ -222,7 +222,11 @@ export default function RegisterForm({
             handleChange={handleChange}
           />
 
-          <Button type="button" onClick={handleNextStep}>
+          <Button
+            type="button"
+            style={{ backgroundColor: "#8db5d9" }}
+            onClick={handleNextStep}
+          >
             Next
           </Button>
         </>
@@ -236,10 +240,18 @@ export default function RegisterForm({
             gender={form.gender}
             handleChange={handleChange}
           />
-          <Button type="button" onClick={handleNextStep}>
+          <Button
+            type="button"
+            style={{ backgroundColor: "#8db5d9" }}
+            onClick={handleNextStep}
+          >
             Next
           </Button>
-          <Button type="button" onClick={handlePrevStep}>
+          <Button
+            type="button"
+            style={{ backgroundColor: "#8db5d9" }}
+            onClick={handlePrevStep}
+          >
             Go back
           </Button>
         </>
@@ -262,7 +274,11 @@ export default function RegisterForm({
           >
             Join us
           </Button>
-          <Button type="button" onClick={handlePrevStep}>
+          <Button
+            type="button"
+            style={{ backgroundColor: "#8db5d9" }}
+            onClick={handlePrevStep}
+          >
             Go back
           </Button>
         </>

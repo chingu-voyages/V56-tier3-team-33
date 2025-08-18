@@ -29,16 +29,17 @@
 }
 
 .loginDetail {
-  font-size: 25px;
+  font-size: 20px;
   display: flex;
   align-items: center;
   text-decoration: none;
+  margin-right: 40px;
 }
 .loginDetail2 {
-  color: black;
-  padding: 5px;
-  background-color: #eeecea;
+  color: white;
+  background: #8db5d9;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  padding: 10px;
 }

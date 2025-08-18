@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as expertsService from "../services/experts";
 import { Combobox } from "./Combobox";
+import { Label } from "../components/userInterface/label";
+import Nav from "../components/Nav";
 
 import styles from "../assets/medicalExpertCards.module.css";
 import specialties from "../data/specialties.json";
@@ -16,6 +18,7 @@ type Expert = {
   city: string;
   languages: string[];
   photoUrl: string;
+  phone: string;
 };
 
 export default function MedicalExpertCards() {
@@ -75,37 +78,40 @@ function ExpertsFilter({
   onCityChange: (city: string) => void;
 }) {
   return (
-    <div>
-      <label>
-        specialty:
-        <Combobox
-          items={specialties
-            .filter((specialty) =>
-              experts.some((expert) => expert.specialty === specialty),
-            )
-            .map((specialty) => ({ label: specialty, value: specialty }))}
-          selectedValue={specialtyFilter}
-          onChange={onSpecialtyChange}
-          placeholder="all"
-        />
-      </label>
+    <>
+      <Nav />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Label style={{ margin: "10px" }}>
+          specialty:
+          <Combobox
+            items={specialties
+              .filter((specialty) =>
+                experts.some((expert) => expert.specialty === specialty),
+              )
+              .map((specialty) => ({ label: specialty, value: specialty }))}
+            selectedValue={specialtyFilter}
+            onChange={onSpecialtyChange}
+            placeholder="all"
+          />
+        </Label>
 
-      <label>
-        city:
-        <Combobox
-          items={cities
-            .filter(({ city }) =>
-              experts.some(
-                (expert) => expert.city.toLowerCase() === city.toLowerCase(),
-              ),
-            )
-            .map(({ city }) => ({ label: city, value: city }))}
-          selectedValue={cityFilter}
-          onChange={onCityChange}
-          placeholder="all"
-        />
-      </label>
-    </div>
+        <Label style={{ margin: "10px" }}>
+          city:
+          <Combobox
+            items={cities
+              .filter(({ city }) =>
+                experts.some(
+                  (expert) => expert.city.toLowerCase() === city.toLowerCase(),
+                ),
+              )
+              .map(({ city }) => ({ label: city, value: city }))}
+            selectedValue={cityFilter}
+            onChange={onCityChange}
+            placeholder="all"
+          />
+        </Label>
+      </div>
+    </>
   );
 }
 
@@ -150,6 +156,7 @@ function ExpertCard({ expert }: { expert: Expert }) {
           )
           .join(", ")}
       </p>
+      <p className={styles.specialty}>{expert.phone}</p>
     </div>
   );
 }
