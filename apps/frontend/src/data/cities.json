@@ -1,0 +1,410 @@
+[
+  {
+    "country_code": "jp",
+    "city": "tokyo"
+  },
+  {
+    "country_code": "cn",
+    "city": "shanghai"
+  },
+  {
+    "country_code": "in",
+    "city": "bombay"
+  },
+  {
+    "country_code": "pk",
+    "city": "karachi"
+  },
+  {
+    "country_code": "in",
+    "city": "delhi"
+  },
+  {
+    "country_code": "in",
+    "city": "new delhi"
+  },
+  {
+    "country_code": "ph",
+    "city": "manila"
+  },
+  {
+    "country_code": "ru",
+    "city": "moscow"
+  },
+  {
+    "country_code": "kr",
+    "city": "seoul"
+  },
+  {
+    "country_code": "br",
+    "city": "sao paulo"
+  },
+  {
+    "country_code": "tr",
+    "city": "istanbul"
+  },
+  {
+    "country_code": "ng",
+    "city": "lagos"
+  },
+  {
+    "country_code": "mx",
+    "city": "mexico"
+  },
+  {
+    "country_code": "id",
+    "city": "jakarta"
+  },
+  {
+    "country_code": "us",
+    "city": "new york"
+  },
+  {
+    "country_code": "cd",
+    "city": "kinshasa"
+  },
+  {
+    "country_code": "eg",
+    "city": "cairo"
+  },
+  {
+    "country_code": "pe",
+    "city": "lima"
+  },
+  {
+    "country_code": "cn",
+    "city": "peking"
+  },
+  {
+    "country_code": "gb",
+    "city": "london"
+  },
+  {
+    "country_code": "co",
+    "city": "bogota"
+  },
+  {
+    "country_code": "bd",
+    "city": "dhaka"
+  },
+  {
+    "country_code": "pk",
+    "city": "lahore"
+  },
+  {
+    "country_code": "br",
+    "city": "rio de janeiro"
+  },
+  {
+    "country_code": "iq",
+    "city": "baghdad"
+  },
+  {
+    "country_code": "th",
+    "city": "bangkok"
+  },
+  {
+    "country_code": "in",
+    "city": "bangalore"
+  },
+  {
+    "country_code": "cl",
+    "city": "santiago"
+  },
+  {
+    "country_code": "in",
+    "city": "calcutta"
+  },
+  {
+    "country_code": "ca",
+    "city": "toronto"
+  },
+  {
+    "country_code": "mm",
+    "city": "rangoon"
+  },
+  {
+    "country_code": "au",
+    "city": "sydney"
+  },
+  {
+    "country_code": "in",
+    "city": "madras"
+  },
+  {
+    "country_code": "cn",
+    "city": "wuhan"
+  },
+  {
+    "country_code": "ru",
+    "city": "saint petersburg"
+  },
+  {
+    "country_code": "cn",
+    "city": "chongqing"
+  },
+  {
+    "country_code": "cn",
+    "city": "xian"
+  },
+  {
+    "country_code": "cn",
+    "city": "chengdu"
+  },
+  {
+    "country_code": "us",
+    "city": "los angeles"
+  },
+  {
+    "country_code": "eg",
+    "city": "alexandria"
+  },
+  {
+    "country_code": "cn",
+    "city": "tianjin"
+  },
+  {
+    "country_code": "au",
+    "city": "melbourne"
+  },
+  {
+    "country_code": "in",
+    "city": "ahmadabad"
+  },
+  {
+    "country_code": "ci",
+    "city": "abidjan"
+  },
+  {
+    "country_code": "ng",
+    "city": "kano"
+  },
+  {
+    "country_code": "ma",
+    "city": "casablanca"
+  },
+  {
+    "country_code": "in",
+    "city": "hyderabad"
+  },
+  {
+    "country_code": "ng",
+    "city": "ibadan"
+  },
+  {
+    "country_code": "sg",
+    "city": "singapore"
+  },
+  {
+    "country_code": "tr",
+    "city": "ankara"
+  },
+  {
+    "country_code": "cn",
+    "city": "shenyang"
+  },
+  {
+    "country_code": "sa",
+    "city": "riyadh"
+  },
+  {
+    "country_code": "vn",
+    "city": "ho chi minh city"
+  },
+  {
+    "country_code": "za",
+    "city": "cape town"
+  },
+  {
+    "country_code": "de",
+    "city": "berlin"
+  },
+  {
+    "country_code": "ca",
+    "city": "montreal"
+  },
+  {
+    "country_code": "cn",
+    "city": "harbin"
+  },
+  {
+    "country_code": "cn",
+    "city": "guangzhou"
+  },
+  {
+    "country_code": "za",
+    "city": "durban"
+  },
+  {
+    "country_code": "es",
+    "city": "madrid"
+  },
+  {
+    "country_code": "cn",
+    "city": "nanjing"
+  },
+  {
+    "country_code": "af",
+    "city": "kabul"
+  },
+  {
+    "country_code": "in",
+    "city": "pune"
+  },
+  {
+    "country_code": "in",
+    "city": "surat"
+  },
+  {
+    "country_code": "us",
+    "city": "chicago"
+  },
+  {
+    "country_code": "in",
+    "city": "kanpur"
+  },
+  {
+    "country_code": "sd",
+    "city": "umm durman"
+  },
+  {
+    "country_code": "ao",
+    "city": "luanda"
+  },
+  {
+    "country_code": "et",
+    "city": "addis abeba"
+  },
+  {
+    "country_code": "ke",
+    "city": "nairobi"
+  },
+  {
+    "country_code": "cn",
+    "city": "taiyuan"
+  },
+  {
+    "country_code": "in",
+    "city": "jaipur"
+  },
+  {
+    "country_code": "br",
+    "city": "salvador"
+  },
+  {
+    "country_code": "sn",
+    "city": "dakar"
+  },
+  {
+    "country_code": "tz",
+    "city": "dar es salaam"
+  },
+  {
+    "country_code": "it",
+    "city": "rome"
+  },
+  {
+    "country_code": "so",
+    "city": "mogadishu"
+  },
+  {
+    "country_code": "sa",
+    "city": "jiddah"
+  },
+  {
+    "country_code": "cn",
+    "city": "changchun"
+  },
+  {
+    "country_code": "tw",
+    "city": "taipei"
+  },
+  {
+    "country_code": "ua",
+    "city": "kiev"
+  },
+  {
+    "country_code": "pk",
+    "city": "faisalabad"
+  },
+  {
+    "country_code": "tr",
+    "city": "izmir"
+  },
+  {
+    "country_code": "in",
+    "city": "lakhnau"
+  },
+  {
+    "country_code": "eg",
+    "city": "gizeh"
+  },
+  {
+    "country_code": "br",
+    "city": "fortaleza"
+  },
+  {
+    "country_code": "co",
+    "city": "cali"
+  },
+  {
+    "country_code": "id",
+    "city": "surabaya"
+  },
+  {
+    "country_code": "br",
+    "city": "belo horizonte"
+  },
+  {
+    "country_code": "ir",
+    "city": "mashhad"
+  },
+  {
+    "country_code": "in",
+    "city": "nagpur"
+  },
+  {
+    "country_code": "zw",
+    "city": "harare"
+  },
+  {
+    "country_code": "br",
+    "city": "brasilia"
+  },
+  {
+    "country_code": "do",
+    "city": "santo domingo"
+  },
+  {
+    "country_code": "jp",
+    "city": "nagoya"
+  },
+  {
+    "country_code": "sy",
+    "city": "aleppo"
+  },
+  {
+    "country_code": "fr",
+    "city": "paris"
+  },
+  {
+    "country_code": "cn",
+    "city": "jinan"
+  },
+  {
+    "country_code": "cn",
+    "city": "tangshan"
+  },
+  {
+    "country_code": "cn",
+    "city": "dalian"
+  },
+  {
+    "country_code": "at",
+    "city": "vienna"
+  },
+  {
+    "country_code": "us",
+    "city": "san francisco"
+  }
+]

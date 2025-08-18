@@ -1,0 +1,41 @@
+{
+  "private": true,
+  "name": "backend",
+  "license": "ISC",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": ">= 16.9.0 "
+  },
+  "engineStrict": true,
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "dotenvx run -- tsx --watch src/server.ts",
+    "db:migrate": "dotenvx run -- tsx src/database/migrate.ts",
+    "db:seed": "dotenvx run -- tsx src/database/seed.ts",
+    "format": "npm run format:be --prefix ../../",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "2.2.2",
+    "bcrypt": "6.0.0",
+    "express": "5.1.0",
+    "pg": "8.16.3"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "1.48.3",
+    "@eslint/js": "9.32.0",
+    "@types/bcrypt": "6.0.0",
+    "@types/express": "5.0.3",
+    "@types/node": "24.1.0",
+    "@types/pg": "8.15.4",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-n": "17.21.3",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "typescript-eslint": "8.38.0"
+  }
+}

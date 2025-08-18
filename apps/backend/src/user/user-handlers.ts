@@ -1,0 +1,35 @@
+import * as userService from "./user-service.js";
+
+import type { Request, Response } from "express";
+
+export async function registerExpert(req: Request, res: Response) {
+  const result = await userService.registerExpert(req.body);
+
+  if (result.type == "validation_error") {
+    res.status(422).json({ errors: result.errors });
+    return;
+  }
+
+  if (result.type == "conflict") {
+    res.status(409).json({ error: result.message });
+    return;
+  }
+
+  res.status(201).json({ message: "user created", ...result.data });
+}
+
+export async function login(req: Request, res: Response) {
+  const result = await userService.login(req.body);
+
+  if (result.type == "validation_error") {
+    res.status(422).json({ errors: result.errors });
+    return;
+  }
+
+  if (result.type == "invalid_credentials") {
+    res.status(401).json({ error: result.message });
+    return;
+  }
+
+  res.status(200).json({ message: "user logged in", ...result.data });
+}

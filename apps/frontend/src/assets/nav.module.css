@@ -1,0 +1,45 @@
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navContainer2 {
+  display: flex;
+}
+
+.logoDetail {
+  display: flex;
+  padding-left: 30px;
+  color: black;
+  font-size: 40px;
+}
+.logoDetailP1 {
+  color: #8db5d9;
+}
+
+.logoDetailP2 {
+  color: #0d3659;
+}
+
+.home {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  color: white;
+}
+
+.loginDetail {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  margin-right: 40px;
+}
+.loginDetail2 {
+  color: white;
+  background: #8db5d9;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 10px;
+}
