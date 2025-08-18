@@ -31,6 +31,7 @@ export default function Filterexpert() {
     <div style={{ paddingLeft: "70px" }}>
       <div style={{ display: "flex", gap: "15px" }}>
         <Label className={styles.inputLabel}>
+          city:
           <Combobox
             items={citiesData}
             selectedValue={city}
@@ -40,6 +41,7 @@ export default function Filterexpert() {
         </Label>
 
         <Label className={styles.inputLabel}>
+          specialty:
           <Combobox
             items={specialtiesData}
             selectedValue={specialty}
