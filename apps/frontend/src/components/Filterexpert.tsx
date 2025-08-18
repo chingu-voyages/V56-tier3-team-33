@@ -1,49 +1,39 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import styles from "../assets/landing.module.css";
 import { Combobox } from "./Combobox";
 import { Label } from "../components/userInterface/label";
+import specialties from "../data/specialties.json";
+import cities from "../data/cities.json";
 
-type ComboboxItem = {
-  value: string;
-  label: string;
-};
-
-// 🔁 Données statiques pour les villes
-const staticCities: ComboboxItem[] = [
-  { value: "Paris", label: "Paris" },
-  { value: "London", label: "London" },
-  { value: "Berlin", label: "Berlin" },
-  { value: "Madrid", label: "Madrid" },
-];
-
-const specialities: ComboboxItem[] = [
-  { value: "Cardiology", label: "Cardiology" },
-  { value: "Dermatology", label: "Dermatology" },
-  { value: "Generalist", label: "Generalist" },
-  { value: "Neurology", label: "Neurology" },
-  { value: "Psychiatry", label: "Psychiatry" },
-];
+import styles from "../assets/landing.module.css";
 
 export default function Filterexpert() {
   const [city, setCity] = useState<string>("");
-  const [speciality, setSpeciality] = useState<string>("");
+  const [specialty, setSpecialty] = useState<string>("");
   const navigate = useNavigate();
 
   const submitButtonFunction = () => {
-    navigate(
-      `/experts?city=${encodeURIComponent(city)}&specialty=${encodeURIComponent(speciality)}`,
-    );
+    navigate("/experts", { state: { city, specialty } });
   };
 
-  const buttonDisable = !city || !speciality;
+  const citiesData = cities.map(({ city }) => ({ label: city, value: city }));
+  citiesData.sort((a, b) => (a.label < b.label ? -1 : 1));
+  citiesData.unshift({ label: "all", value: "" });
+
+  const specialtiesData = specialties.map((specialty) => ({
+    label: specialty,
+    value: specialty,
+  }));
+  specialtiesData.sort((a, b) => (a.label < b.label ? -1 : 1));
+  specialtiesData.unshift({ label: "all", value: "" });
 
   return (
     <div style={{ paddingLeft: "70px" }}>
       <div style={{ display: "flex", gap: "15px" }}>
         <Label className={styles.inputLabel}>
+          city:
           <Combobox
-            items={staticCities}
+            items={citiesData}
             selectedValue={city}
             onChange={setCity}
             placeholder="Choose your city"
@@ -51,10 +41,11 @@ export default function Filterexpert() {
         </Label>
 
         <Label className={styles.inputLabel}>
+          specialty:
           <Combobox
-            items={specialities}
-            selectedValue={speciality}
-            onChange={setSpeciality}
+            items={specialtiesData}
+            selectedValue={specialty}
+            onChange={setSpecialty}
             placeholder="Choose your speciality"
           />
         </Label>
@@ -62,7 +53,6 @@ export default function Filterexpert() {
 
       <button
         onClick={submitButtonFunction}
-        disabled={buttonDisable}
         style={{
           marginTop: "15px",
           width: "415px",

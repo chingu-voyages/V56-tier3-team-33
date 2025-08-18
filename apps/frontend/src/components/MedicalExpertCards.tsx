@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as expertsService from "../services/experts";
 import { Combobox } from "./Combobox";
 import { Label } from "../components/userInterface/label";
@@ -22,9 +22,19 @@ type Expert = {
 };
 
 export default function MedicalExpertCards() {
+  const location = useLocation();
+
   const [experts, setExperts] = useState<Expert[]>([]);
   const [specialtyFilter, setSpecialtyFilter] = useState("");
   const [cityFilter, setCityFilter] = useState("");
+
+  useEffect(() => {
+    if (location.state) {
+      setSpecialtyFilter(location.state.specialty ?? "");
+      setCityFilter(location.state.city ?? "");
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
 
   useEffect(() => {
     expertsService
@@ -77,6 +87,24 @@ function ExpertsFilter({
   onSpecialtyChange: (specialty: string) => void;
   onCityChange: (city: string) => void;
 }) {
+  const specialtiesData = specialties
+    .filter((specialty) =>
+      experts.some((expert) => expert.specialty === specialty),
+    )
+    .map((specialty) => ({ label: specialty, value: specialty }));
+  specialtiesData.sort((a, b) => (a.label < b.label ? -1 : 1));
+  specialtiesData.unshift({ label: "all", value: "" });
+
+  const citiesData = cities
+    .filter(({ city }) =>
+      experts.some(
+        (expert) => expert.city.toLowerCase() === city.toLowerCase(),
+      ),
+    )
+    .map(({ city }) => ({ label: city, value: city }));
+  citiesData.sort((a, b) => (a.label < b.label ? -1 : 1));
+  citiesData.unshift({ label: "all", value: "" });
+
   return (
     <>
       <Nav />
@@ -84,11 +112,7 @@ function ExpertsFilter({
         <Label style={{ margin: "10px" }}>
           specialty:
           <Combobox
-            items={specialties
-              .filter((specialty) =>
-                experts.some((expert) => expert.specialty === specialty),
-              )
-              .map((specialty) => ({ label: specialty, value: specialty }))}
+            items={specialtiesData}
             selectedValue={specialtyFilter}
             onChange={onSpecialtyChange}
             placeholder="all"
@@ -98,13 +122,7 @@ function ExpertsFilter({
         <Label style={{ margin: "10px" }}>
           city:
           <Combobox
-            items={cities
-              .filter(({ city }) =>
-                experts.some(
-                  (expert) => expert.city.toLowerCase() === city.toLowerCase(),
-                ),
-              )
-              .map(({ city }) => ({ label: city, value: city }))}
+            items={citiesData}
             selectedValue={cityFilter}
             onChange={onCityChange}
             placeholder="all"
